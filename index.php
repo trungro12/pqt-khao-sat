@@ -6,6 +6,13 @@
     <title>PQT</title>
 </head>
 <body>
-    
+    <div id='header' class='header'>
+        <div class='logo-left'>
+            <h1>PQT</h1>
+        </div>
+        <div class='logo-right'>
+            
+        </div>
+    </div>
 </body>
 </html>
