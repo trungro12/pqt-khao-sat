@@ -5,9 +5,10 @@ input{
     border:3px;
 }
 body{font: 15px / 1.4 sans-serif;font-weight : 500;}
-strong,b,h1,h2,h3,h4,h5{font-weight:700!important}
+strong,b,h1,h2,h3,h4,h5{font-weight:500!important}
 .left{float: left;}
 .right{float: right;}
+
 #header{
     position: relative;
     top : 0;
@@ -18,6 +19,9 @@ strong,b,h1,h2,h3,h4,h5{font-weight:700!important}
     height: 3.5rem;
     z-index: 1030;
     box-shadow: 0 0 0 1px rgba(20,20,31,.05), 0 1px 3px 0 rgba(20,20,31,.15);
+}
+#logo, #logo a{
+    color:fff!important;
 }
 .top-bar {
     display: -ms-flexbox;
@@ -52,9 +56,16 @@ strong,b,h1,h2,h3,h4,h5{font-weight:700!important}
 }
 
 .introduce{
-text-align: center;
-margin-top : 40px;
-border-bottom: 1px solid #346cb0;
+
+    background: #8a0abd;
+    color: #fff;
+    text-align: center;
+    margin: auto;
+    padding: 40px 30px;
+    display: block;
+    background-image: linear-gradient(to right, #33b5af, rgba(218, 59, 147, 0.88));
+    box-shadow: 3px 3px 10px rgb(172, 167, 167);
+    -webkit-box-shadow: 3px 3px 10px rgb(172, 167, 167);
 }
 
 .survey-content{
@@ -87,12 +98,19 @@ border-bottom: 1px solid #346cb0;
     background: #fff;
    
 }
+.group-content .box-question{
+position: relative; 
+}
+
 .delete-group{
     top: 0;
     position: absolute;
     right: 0;
     font-size: 11.6px;
     border-radius: 0;
+}
+.box-question .delete-group{
+    top : 30;
 }
 .title-input{
     margin-top: -5px;
@@ -171,3 +189,92 @@ border-bottom: 1px solid #346cb0;
     left: calc(50% - 21px);
   }
   
+
+
+
+  /* Login css */
+
+  .pqt-form {
+    line-height: 40px;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 40px;
+    background: #1565c0;
+    padding: 3px;
+    box-shadow: 3px 3px 10px rgb(172, 167, 167);
+    -webkit-box-shadow: 3px 3px 10px rgb(172, 167, 167);
+    border-radius: 10px 10px 2px 2px;
+}
+.pqt-form .pqt-title {
+    text-align: center;
+    color: #fff;
+    background: #1565c0;
+}
+.pqt-form .pqt-content {
+    padding: 20px;
+    line-height: 20px;
+    text-align: center;
+    background: #fff;
+}
+.pqt-form .pqt-content form label {
+    margin: 0;
+    font-weight: 600;
+    display: block;
+    margin-bottom: -30px;
+}
+.pqt-form .pqt-content form input {
+    width: 100%;
+    padding: 4px;
+    margin-top: 21px;
+    border: 3px;
+    border-top: 1px solid #0789c7;
+    border-bottom: 1px solid #0789c7;
+    text-align: center;
+    height: 2.6rem;
+    outline: none;
+    font-size: 1rem;
+    transition: .3s;
+}
+.pqt-form .pqt-content form label {
+    margin: 0;
+    font-weight: 600;
+    display: block;
+    margin-bottom: -30px;
+    padding: 10px;
+}
+.pqt-form .pqt-content form input {
+    width: 100%;
+    padding: 4px;
+    margin-top: 21px;
+    border: 3px;
+    border-top: 1px solid #0789c7;
+    border-bottom: 1px solid #0789c7;
+    text-align: center;
+    height: 2.6rem;
+    outline: none;
+    font-size: 1rem;
+    transition: .3s;
+}
+.pqt-btn {
+    border: 4px;
+    font-family: Quicksand!important;
+    margin-top: 21px;
+    font-weight: 600;
+    font-size: 17px;
+    cursor: pointer;
+    transition: .3s;
+    width: 100%;
+    font-weight: 600;
+    padding: 10px;
+}
+.blue {
+    color: #fff;
+    background: #0789c7;
+    box-shadow: 3px 3px 14px rgb(106, 168, 187);
+    -webkit-box-shadow: 3px 3px 14px rgb(106, 168, 187);
+}
+
+
+/* Select CSS */
+
+/* End Select CSS */
