@@ -1,4 +1,6 @@
-<?php include '../header.php' ?>
+<?php include '../header.php';
+pqt_permission();
+?>
 <div class="page-content">
     <div class="container">
         <div class="survey-content">

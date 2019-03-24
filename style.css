@@ -20,6 +20,9 @@ strong,b,h1,h2,h3,h4,h5{font-weight:500!important}
     z-index: 1030;
     box-shadow: 0 0 0 1px rgba(20,20,31,.05), 0 1px 3px 0 rgba(20,20,31,.15);
 }
+#header .login{
+    margin-left: 3px;
+}
 #logo, #logo a{
     color:fff!important;
 }
@@ -54,7 +57,10 @@ strong,b,h1,h2,h3,h4,h5{font-weight:500!important}
     float: right;
     font-size : 100%;
 }
-
+@media screen and (max-width : 762px)
+{
+    .notice{display:none;}
+}
 .introduce{
 
     background: #8a0abd;
@@ -71,12 +77,13 @@ strong,b,h1,h2,h3,h4,h5{font-weight:500!important}
 .survey-content{
     margin-top : 50px;
 }
-
+.survey-content h3{text-align:center;}
 .pqt-btn{
-    display: table;
+    display: block;
     text-align: center;
     margin: auto;
-    margin-top : 30px;
+    margin-top: 30px;
+    max-width: 250px;
 }
 
 .group{
@@ -266,7 +273,9 @@ position: relative;
     width: 100%;
     font-weight: 600;
     padding: 10px;
+    border-radius: 5px;
 }
+.full{width:100%}
 .blue {
     color: #fff;
     background: #0789c7;

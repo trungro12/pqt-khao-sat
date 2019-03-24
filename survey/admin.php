@@ -1,6 +1,8 @@
-<?php include '../header.php' ?>
+<?php include '../header.php';
+pqt_permission();
+?>
     <div class="page-content">
-        <a class='btn btn-success pqt-btn' href="<?php echo $baseurl; ?>/add.php">Tạo khảo sát mới</a>
+        <a class='btn btn-success pqt-btn' href="<?php echo $baseurl; ?>/survey/add.php">Tạo khảo sát mới</a>
         <div class="container">
             <div class="row survey-content">
                 <div class="col-xs-6 col-md-3 text-center item">

@@ -1,6 +1,10 @@
 <?php
+if(!isset($_SESSION)) session_start();
+
+header('Content-Type: text/html; charset=utf-8');
 $dirhome = $_SERVER["DOCUMENT_ROOT"]."/pqt-khao-sat";
 include $dirhome."/"."functions.php";
+include $dirhome."/db\/"."connect.php";
 $baseurl = pqt_baseurl();
 ?>
 
@@ -14,7 +18,8 @@ $baseurl = pqt_baseurl();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
     <link rel='stylesheet' href='<?php echo $baseurl; ?>/style.css'>
-    <script src="<?php echo $baseurl; ?>/js/pqt-js.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <title>PQT</title>
 </head>
 <body>
@@ -24,8 +29,23 @@ $baseurl = pqt_baseurl();
             <h1 id='logo'> <a href="<?php echo $baseurl; ?>">PQT</a> </h1>
         </div>
         <div class='top-bar-note'>
-        <span>Hệ thống khảo sát miễn phí với nhiều tính năng hấp dẫn</span>
-         <a class='btn btn-primary' href="<?php echo $baseurl; ?>/login.php"> Đăng nhập</a> 
+        <span class='notice'>Hệ thống khảo sát miễn phí với nhiều tính năng hấp dẫn</span>
+        
+        <?php
+            if(isset($_SESSION['username']))
+            {
+                $admin = $_SESSION['username'];
+                echo "<a class='login btn btn-primary' href='".$baseurl."/survey/admin.php'> ".$admin."</a> 
+                <a class='login btn btn-primary' href='".$baseurl."/logout.php'> Đăng xuất</a> 
+                ";
+            }
+            else
+            {
+                echo "<a class='login btn btn-primary' href='".$baseurl."/login.php'> Đăng nhập</a> ";
+            }
+        ?>
+
+
         </div>
     </div>
     </header>
