@@ -3,8 +3,16 @@ pqt_permission();
 ?>
 <div class="page-content">
     <div class="container">
+        <br />
+        <form action="" method="POST">
+        <div class="form-group" style='position:relative;'>
+            <div class="col-xs-12">
+                <label for="survey_title" style='text-align:center;font-weight: bold;font-size: 25px;'>Tiêu đề khảo sát</label>
+                <input required name="survey_title" class="form-control" id="survey_title" type="text">
+            </div>
+        </div>
         <div class="survey-content">
-            <form action="" method="POST">
+          
                 <div id='fgroup-0'>
                     <h3> Nhóm câu hỏi </h3>
                     <div class="group">
@@ -22,16 +30,18 @@ pqt_permission();
                                 <div id="fquestion-0">
                                     <div class="box-question">
                                         <label for="comment-0">Nội dung câu hỏi:</label>
-                                        <span> <button onclick="delete_question(0)" class='btn btn-danger delete-group' href="#">Xóa câu này</button></span>
+                                        <span> <button onclick="delete_question(0,0)" class='btn btn-danger delete-group' href="#">Xóa câu này</button></span>
                                         <textarea required name="question_title[]" class="form-control" rows="5" id="comment-0"></textarea>
+
                                     </div>
                                 </div>
                                 <div id='show_question-0'></div>
+                                <input type="hidden" id="question_number-0" name="question_number[]" value="1">
                             </div>
-                            <button class='btn btn-primary pqt-btn full' onclick='add_question(0);'>Thêm câu hỏi mới</button>
+                            <button type='button' class='btn btn-primary pqt-btn full' onclick='add_question(0);'>Thêm câu hỏi mới</button>
                             <span>Cho phép người dùng thêm ý kiến<span>
                                     <div>
-                                        <input name="vote[]" type="checkbox" id="cbx" style="display:none" />
+                                        <input value="1" name="vote[]" type="checkbox" id="cbx" style="display:none" />
                                         <label for="cbx" class="toggle">
                                             <span>
                                                 <svg width="10px" height="10px" viewBox="0 0 10 10">
@@ -44,9 +54,9 @@ pqt_permission();
                     </div>
                 </div>
                 <div id='show_group'></div>
-                <button class='btn btn-success pqt-btn full' id='add_group' href="#">Thêm nhóm câu hỏi mới</button>
+                <button type='button' class='btn btn-success pqt-btn full' id='add_group' href="#">Thêm nhóm câu hỏi mới</button>
 
-                <button class='btn btn-primary pqt-btn full' type='submit' href="#">Lưu</button>
+                <button class='btn btn-primary pqt-btn full' name='submit' type='submit'>Tiến hành tạo khảo sát</button>
             </form>
         </div>
 
@@ -62,7 +72,7 @@ pqt_permission();
     $("#add_group").click(function() {
         id_group++;
         id_question++
-        $('<div id="fgroup-' + id_group + '"><br /><h3> Nhóm câu hỏi </h3><div class="group">  <div class="group-title">  <span>    <div class="col-xs-4"> <label for="ex' + id_group + '">Tiêu đề nhóm câu khảo sát.</label> <input class="form-control" required name="group_title[]" id="ex' + id_group + '" type="text"> </div>  </span> <span> <button class="btn btn-danger delete-group" onclick="delete_group(' + id_group + ')" >Xóa nhóm này</button></span> </div> <div class="group-content"> <div class="form-group" style="position:relative;"> <div id="fquestion-' + id_question + '"> <div class="box-question"> <label for="comment-' + id_question + '">Nội dung câu hỏi:</label> <span> <button onclick="delete_question(' + id_question + ')" class="btn btn-danger delete-group" >Xóa câu này</button></span> <textarea required name="question_title[]" class="form-control" rows="5" id="comment-' + id_question + '"></textarea> </div> </div>  <div id="show_question-' + id_group + '"></div>  </div> <button class="btn btn-primary pqt-btn" onclick="add_question(' + id_group + ');">Thêm câu hỏi mới</button> <span>Cho phép người dùng thêm ý kiến<span> <div> <input name="vote[]" type="checkbox" id="cbx-' + id_group + '" style="display:none" /> <label for="cbx-' + id_group + '" class="toggle"> <span> <svg width="10px" height="10px" viewBox="0 0 10 10"> <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>  </svg> </span> </label>  </div> </div> </div></div> <style>   #cbx-' + id_group + ':checked + .toggle:before { background: #52d66b; } #cbx-' + id_group + ':checked + .toggle span { transform: translateX(18px); } #cbx-' + id_group + ':checked + .toggle span path {   stroke: #52d66b;   stroke-dasharray: 25;   stroke-dashoffset: 25; } </style>').insertBefore("#show_group");
+        $('<div id="fgroup-' + id_group + '"><br /><h3> Nhóm câu hỏi </h3><div class="group">  <div class="group-title">  <span>    <div class="col-xs-4"> <label for="ex' + id_group + '">Tiêu đề nhóm câu khảo sát.</label> <input class="form-control" required name="group_title[]" id="ex' + id_group + '" type="text"> </div>  </span> <span> <button class="btn btn-danger delete-group" onclick="delete_group(' + id_group + ')" >Xóa nhóm này</button></span> </div> <div class="group-content"> <div class="form-group" style="position:relative;"> <div id="fquestion-' + id_question + '"> <div class="box-question"> <label for="comment-' + id_question + '">Nội dung câu hỏi:</label> <span> <button onclick="delete_question(' + id_question + ',' + id_group + ')" class="btn btn-danger delete-group" >Xóa câu này</button></span> <textarea required name="question_title[]" class="form-control" rows="5" id="comment-' + id_question + '"></textarea> </div> </div> <input type="hidden" id="question_number-' + id_group + '" name="question_number[]" value="1"> <div id="show_question-' + id_group + '"></div>  </div> <button type="button" class="btn btn-primary pqt-btn" onclick="add_question(' + id_group + ');">Thêm câu hỏi mới</button> <span>Cho phép người dùng thêm ý kiến<span> <div> <input value="1" name="vote[]" type="checkbox" id="cbx-' + id_group + '" style="display:none" /> <label for="cbx-' + id_group + '" class="toggle"> <span> <svg width="10px" height="10px" viewBox="0 0 10 10"> <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>  </svg> </span> </label>  </div> </div> </div></div> <style>   #cbx-' + id_group + ':checked + .toggle:before { background: #52d66b; } #cbx-' + id_group + ':checked + .toggle span { transform: translateX(18px); } #cbx-' + id_group + ':checked + .toggle span path {   stroke: #52d66b;   stroke-dasharray: 25;   stroke-dashoffset: 25; } </style>').insertBefore("#show_group");
     });
 
     function delete_group(id) {
@@ -76,34 +86,97 @@ pqt_permission();
 
     // Add, Delete Question 
 
+    var question_number = 0;
 
 
     function add_question(id) {
         id_question++;
-        $('<div id="fquestion-' + id_question + '"><div class="box-question" ><label for="comment-' + id_question + '">Nội dung câu hỏi:</label> <span> <button class="btn btn-danger delete-group" onclick="delete_question(' + id_question + ')">Xóa câu này</button></span>  <textarea name="question_title[]" class="form-control" rows="5" id="comment-' + id_question + '"></textarea></div></div>').insertBefore("#show_question-" + id + "");
+        question_number = $("#question_number-" + id + "").val();
+        question_number++;
+        $("#question_number-" + id + "").val(question_number);
+        $('<div id="fquestion-' + id_question + '"><div class="box-question" ><label for="comment-' + id_question + '">Nội dung câu hỏi:</label> <span> <button class="btn btn-danger delete-group" onclick="delete_question(' + id_question + ',' + id_group + ')">Xóa câu này</button></span>  <textarea name="question_title[]" class="form-control" rows="5" id="comment-' + id_question + '"></textarea></div></div>').insertBefore("#show_question-" + id + "");
     };
 
-    function delete_question(id) {
+    function delete_question(id, id_group) {
         if (id < 0) id = 0;
         else {
+            question_number = $("#question_number-" + id_group + "").val();
+            question_number--;
+            $("#question_number-" + id_group + "").val(question_number);
+
+
             $("#fquestion-" + id + "").remove();
 
         }
     }
-</script> 
+</script>
 
 
 <?php
-if(isset($_POST['submit']))
-{
-    $group_array = array_values($_POST['group_title[]']);
-    $question_array = array_values($_POST['question_title[]']);
-    $vote_array = array_values($_POST['vote[]']);
+if (isset($_POST['submit'])) {
     $count = 0;
-    foreach($group_array as $i)
-    {
+    $k = 0;
+    $surveytitle = $_POST['survey_title'];
+    $stringSQL = "insert INTO survey(survey_title,survey_group,date,vote,numvote) values('".$surveytitle."','',now(),0,0)";
+    $query = mysqli_query($conn, $stringSQL);
+    if (!$query) {
+        echo '<script>
+    swal("Lỗi !!!", "Có lỗi khi thêm Thảo sát", "error");
+</script>';
+        exit;
+    } else {
+        // get id survey
+        $stringSQL = "select top 1 survey_id from survey where survey_title = '".$surveytitle."'";
+        $query = mysqli_query($conn, $stringSQL);
+        $idsurvey = mysqli_fetch_assoc($query);
 
-        $count++;
+
+        $group_title = array_values($_POST['group_title']);
+        $vote_group = array_values($_POST['vote']);
+        $question_title = array_values($_POST['question_title']);
+        foreach ($_POST['question_number'] as $number_question) {
+            $time = time();
+            // insert groups
+            $content_group = $group_title[$k]; 
+            $votestate = $vote_group[$k];
+            $stringSQL = "insert INTO survey_groups(group_title,date,group_question,vote) values('".$content_group."',".$time.",'',".$votestate.")";
+            $query = mysqli_query($conn, $stringSQL);
+            if (!$query) {
+                echo '<script>
+            swal("Lỗi !!!", "Có lỗi khi thêm Tên Groups", "error");
+        </script>';
+                exit;
+            } else {
+                // Fetch id group
+                $stringSQL = "select group_id from survey_groups where question_title = '".$content_question."' and date = '".$time."'";
+                $query = mysqli_query($conn, $stringSQL);
+                $idgroup = mysqli_fetch_assoc(mysqli_query($conn, $query));
+
+                for ($i = $count; $i < $number_question + $count; $i++) {
+                    $content_question = $question_title[$i];
+                    $stringSQL = "insert INTO survey_questions(question_title,date) values('".$content_question."',".$time.")";
+                    $query = mysqli_query($conn, $stringSQL);
+                    // get id questions
+                    $stringSQL = "select question_id from survey_questions where question_title='".$content_question."' and date = '$time'";
+                    $query = mysqli_query($conn, $stringSQL);
+
+                    if (!$query) {
+                        echo '<script> swal("Lỗi !!!", "Có lỗi khi thêm Câu hỏi", "error");  </script>';
+                        exit;
+                    } else {
+                        $id_question = mysqli_fetch_assoc($query);
+                        $stringSQL = "update survey_questions set group_question = group_question + '".$id_question."-pqt-' where group_id = $idgroup";
+                        $query = mysqli_query($conn, $stringSQL);
+                    }
+                }
+
+                $stringSQL = "update survey_questions set survey_group = survey_group + '".$idgroup."-pqt-' where survey_id = $idsurvey";
+                $query = mysqli_query($conn, $stringSQL);
+            }
+            echo '<script> swal("Thành công !!!", "Thêm khảo sát thành công!!!", "success");  </script>';
+            $count = $number_question;
+            $k++;
+        }
     }
 }
-?>
+?> 

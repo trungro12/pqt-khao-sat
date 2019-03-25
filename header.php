@@ -29,7 +29,7 @@ $baseurl = pqt_baseurl();
             <h1 id='logo'> <a href="<?php echo $baseurl; ?>">PQT</a> </h1>
         </div>
         <div class='top-bar-note'>
-        <span class='notice'>Hệ thống khảo sát miễn phí với nhiều tính năng hấp dẫn</span>
+        <span class='notice'>Hệ thống khảo sát và trắc nghiệm miễn phí</span>
         
         <?php
             if(isset($_SESSION['username']))

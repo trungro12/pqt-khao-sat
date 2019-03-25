@@ -1,5 +1,5 @@
 <?php
-if(!isset($_SESSION)) session_start();
+if (!isset($_SESSION)) session_start();
 header('Content-Type: text/html; charset=utf-8');
 $dirhome = $_SERVER["DOCUMENT_ROOT"] . "/pqt-khao-sat";
 include $dirhome . "/" . "functions.php";
@@ -70,7 +70,20 @@ $baseurl = pqt_baseurl();
         if (!$conn) {
             echo '<script>swal("Lỗi kết nối", "Có lỗi khi kết nối đếnn cơ sở dữ liệu", "error"); </script>';
         } else {
-            $sql = "Create table IF NOT EXISTS groups(
+
+            $sql = "Create table IF NOT EXISTS survey(
+                survey_id int primary key AUTO_INCREMENT,
+                survey_title varchar(255) not null,
+                survey_group varchar(255) not null,
+                date TIMESTAMP,
+                vote tinyint,
+                numvote tinyint
+                )";
+            if (mysqli_query($conn, $sql)) {
+                echo "Tạo bảng groups thành công !!!";
+            }
+
+            $sql = "Create table IF NOT EXISTS survey_groups(
                     group_id int primary key AUTO_INCREMENT,
                     group_title varchar(255) not null,
                     date TIMESTAMP,
@@ -82,7 +95,7 @@ $baseurl = pqt_baseurl();
             }
 
 
-            $sql = "Create table IF NOT EXISTS questions(
+            $sql = "Create table IF NOT EXISTS survey_questions(
                         question_id int primary key AUTO_INCREMENT,
                         question_title varchar(255) not null,
                         date TIMESTAMP
@@ -105,17 +118,20 @@ $baseurl = pqt_baseurl();
                 }
             }
             $fp = fopen('../db/connect.php', 'w');
-            fwrite($fp, '<?php $db_host = "'.$db_host.'";
-            $db_user = "'.$db_user.'";
-            $db_password = "'.$db_password.'";
-            $db_name = "'.$db_name.'";
+            fwrite($fp, '<?php $db_host = "' . $db_host . '";
+            $db_user = "' . $db_user . '";
+            $db_password = "' . $db_password . '";
+            $db_name = "' . $db_name . '";
             $conn = mysqli_connect($db_host,$db_user,$db_password,$db_name);
+            mysqli_set_charset($conn, "UTF8");
             if(!$conn)
             {
                 header("Location: install/index.php");
             } ?>');
             fclose($fp);
-            echo '<script>swal("Thành công !!!", "Chúc mừng bạn đã cài đặt thành công !! Hãy xóa thư mục install hoặc di chuyển thư mục install sang nơi khác.", "success"); </script>';
+            echo '<script>
+        swal("Thành công !!!", "Chúc mừng bạn đã cài đặt thành công !! Hãy xóa thư mục install hoặc di chuyển thư mục install sang nơi khác.", "success");
+    </script>';
         }
     }
     ?> 
