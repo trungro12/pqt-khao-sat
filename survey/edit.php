@@ -138,12 +138,13 @@ pqt_permission();
     });
 
     function delete_group(id) {
-
+        var id_survey = <?php echo $idsurvey; ?>;
         $.ajax({
             type: "POST",
-            url: "<?php echo $baseurl ?>/survey/mod-delete-question.php",
+            url: "<?php echo $baseurl ?>/survey/mod-delete-group.php",
             data: {
                 id: id,
+                id_survey:id_survey,
             },
             success: function(data) {
                 $("#fgroup-" + id + "").remove();

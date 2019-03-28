@@ -3,10 +3,11 @@
 include '../db/connect.php';
  // delete  question, not completed
 $idGroup = $_POST['id'];
+$id_survey = $_POST['id_survey'];
  $stringSQL = "delete from survey_groups where group_id=".$idPost."";
  $query = mysqli_query($conn, $stringSQL);
 
- $stringSQL = "update survey_groups set group_question = REPLACE(group_question,'" . $idPost . "-pqt-','') where group_id=" . $idGroup . "";
+ $stringSQL = "update survey set survey_group = REPLACE(survey_group,'" . $idGroup . "-pqt-','') where survey_id=" . $id_survey . "";
  $query = mysqli_query($conn, $stringSQL);
 
 ?>
