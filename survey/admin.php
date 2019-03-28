@@ -10,7 +10,7 @@ pqt_permission();
                         <img src="<?php echo $baseurl; ?>/images/survey-icon-blue.png" alt="#">
                         <p class='survey-name'>Tiêu đề khảo sát!!!!!!!!!!!!!!!!!!!!!!!o sát!!!!!!!!!!!!!!!!!!!!!!</p>
                     </a>
-                    <a href="<?php echo $baseurl; ?>/edit.php" class='btn btn-info'>Sửa</a>
+                    <a href="<?php echo $baseurl; ?>/survey/edit.php" class='btn btn-info'>Sửa</a>
                     <a href="#" class='btn btn-primary' >Xem</a>
                     <a href="#" class='btn btn-danger' >Xóa</a>
                 </div>

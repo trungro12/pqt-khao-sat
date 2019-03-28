@@ -23,7 +23,7 @@ pqt_permission();
                                     <input required name="group_title[]" class="form-control" id="ex0" type="text">
                                 </div>
                             </span>
-                            <span> <button onclick="delete_group(0)" class='btn btn-danger delete-group' href="#">Xóa nhóm này</button></span>
+                            <span> <button onclick="delete_group(0)" class='btn btn-danger delete-group' >Xóa nhóm này</button></span>
                         </div>
                         <div class="group-content">
                             <div class="form-group" style='position:relative;'>
@@ -132,19 +132,18 @@ if (isset($_POST['submit'])) {
 
         $group_title = array_values($_POST['group_title']);
         // $vote_group = array_values($_POST['vote']);
-        $temp = 0;
         $item = 0;
         $vote_group = array();
         foreach ($_POST['group_title'] as $key => $value) {
 
-                while (!isset($_POST["vote_$item"])) {
-                        $item++;
-                    }
-                if (isset($_POST["vote_$item"])) {
-                    $vote_group[$key] = $_POST["vote_$item"];
-                    $item++;
-                }
+            while (!isset($_POST["vote_$item"])) {
+                $item++;
             }
+            if (isset($_POST["vote_$item"])) {
+                $vote_group[$key] = $_POST["vote_$item"];
+                $item++;
+            }
+        }
 
 
         $question_title = array_values($_POST['question_title']);
