@@ -5,7 +5,7 @@ include '../db/connect.php';
  // add -> insert group
 $idsurvey = $_POST['idsurvey'];
 
-$stringSQL = "insert INTO survey_groups(group_title,date,group_question,vote) values('',now(),'',1)";
+$stringSQL = "insert INTO survey_groups(group_title,date,group_question,vote,custom_vote) values('',now(),'',1,'')";
 $query = mysqli_query($conn, $stringSQL);
 $id_group = mysqli_insert_id($conn);
 

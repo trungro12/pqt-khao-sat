@@ -77,7 +77,7 @@ $baseurl = pqt_baseurl();
                 survey_group varchar(255) not null,
                 date TIMESTAMP,
                 vote tinyint,
-                score tinyint
+                score float
                 )";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng groups thành công !!!";
@@ -100,7 +100,7 @@ $baseurl = pqt_baseurl();
                         question_id int primary key AUTO_INCREMENT,
                         question_title varchar(255) not null,
                         vote tinyint,
-                        score tinyint,
+                        score float,
                         date TIMESTAMP
                         )";
             if (mysqli_query($conn, $sql)) {

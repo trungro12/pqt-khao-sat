@@ -20,7 +20,6 @@ function delete_survey(id) {
             success: function (data) {
                 $("#survey-" + ids + "").remove();
                 swal("Done!", "Xóa thành công!", "success");
-
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 swal("Error!", "Lỗi khi xóa, hãy thử lại sau!", "error");
@@ -29,3 +28,4 @@ function delete_survey(id) {
     });
 
 }
+

@@ -25,8 +25,6 @@ if ($data) {
                                     }
                             }
 
-
-
                         $stringSQL = "delete from survey_groups where group_id=" . $id . "";
                         $query = mysqli_query($conn, $stringSQL);
                     }
@@ -36,4 +34,4 @@ if ($data) {
 $stringSQL = "delete from survey where survey_id=" . $survey_id . "";
 $query = mysqli_query($conn, $stringSQL);
 
- 
+ ?>

@@ -2,12 +2,12 @@
 pqt_permission();
 ?>
 <div class="page-content">
-    <div class="container">
+    <div class="container" id="full-page">
         <br />
         <?php
         if (isset($_GET['survey_id'])) {
-            $idsurvey = $_GET['survey_id'];
-            $stringSQL = "select * from survey where survey_id=" . $idsurvey;
+            $survey_id = $_GET['survey_id'];
+            $stringSQL = "select * from survey where survey_id=" . $survey_id;
             $dataSurvey = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
             if(!$dataSurvey)
             {
@@ -28,9 +28,19 @@ pqt_permission();
                     <input required value="<?php echo $dataSurvey['survey_title']; ?>" name="survey_title" class="form-control" id="survey_title" type="text">
                     <span id="update-survey"> </span>
                 </div>
+                <br />
+                <?php
+                        if(is_admin())
+                        {
+
+                        ?>
+                        <a href="<?php echo $baseurl; ?>/survey/view.php?survey_id=<?php echo $survey_id; ?>" class='btn btn-primary'>Xem</a>
+                        <?php
+}
+                        ?>
                 <script>
                     $("#survey_title").on("change", function() {
-                        var post = <?php echo $idsurvey; ?>;
+                        var post = <?php echo $survey_id; ?>;
                         var comment = $.trim($(this).val());
                         if (comment == "") {
                             swal("Error !!!", "Không được để trống !", "error");
@@ -142,7 +152,7 @@ pqt_permission();
                                                 },
                                                 success: function(data) {
 
-                                                    $("#update-comment-<?php echo $id_question; ?>").html("<b style='color:red;'>Cập nhật thành công</b>");
+                                                    $("#update-comment-<?php echo $id_question; ?>").html("<b>Cập nhật thành công</b>");
                                                     setTimeout(() => {
                                                         $("#update-comment-<?php echo $id_question; ?>").html("");
                                                     }, 1500);
@@ -150,7 +160,7 @@ pqt_permission();
                                                 }
                                             });
                                         });
-                                        $("#update-ex<?php echo $id_group; ?>").css("color","#fff");
+                                        $("#update-comment-<?php echo $id_question; ?>").css("color","red");
                                     </script>
                                 </div>
                             </div>
@@ -245,14 +255,39 @@ pqt_permission();
 
     </div>
 </div>
+<script>
+    var local_survey_id = <?php echo $survey_id ?>;
+    $("#delete_survey").click(function() {
+        var cf = confirm("Bạn có chắc muốn xóa?");
+        if (cf != true) return;
+        else {
+            var this_url = window.location.href;
+            $(".page-content").css("display","none");
+            $.ajax({
+                url: "../survey/delete.php",
+                type: "POST",
+                data: {
+                    id: local_survey_id
+                },
+                success: function(data) {
+                 
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    swal("Error!", "Lỗi khi xóa, hãy thử lại sau!", "error");
+                }
+            });
+        }
 
+
+    });
+</script>
 <?php include '../footer.php' ?>
 
 <script>
     // Add, Delete Group 
     var id_group = <?php echo $last_id_group ?>;
     var id_question = <?php echo $last_id_question ?>;
-    var idsurvey = <?php echo $idsurvey ?>;
+    var idsurvey = <?php echo $survey_id ?>;
     $("#add_group").click(function() {
 
         $.ajax({
@@ -266,7 +301,7 @@ pqt_permission();
                 id_group = data.id_groups;
                 id_question = data.id_questions;
                 console.log(data);
-                $('<div id="fgroup-' + id_group + '"><br /><h3> Nhóm câu hỏi </h3><div class="group">  <div class="group-title">  <span>    <div class="col-xs-4"> <label for="ex' + id_group + '">Tiêu đề nhóm câu khảo sát.</label> <input class="form-control" required name="group_title[]" id="ex' + id_group + '" type="text"> <span id="update-ex' + id_group + '"> </span> </div>  </span> <span> <button class="btn btn-danger delete-group" onclick="delete_group(' + id_group + ')" >Xóa nhóm này</button></span> </div> <script> $("#ex' + id_group + '").on("change", function() { var post = ' + id_group + ';   var comment = $.trim($(this).val()); if (comment == "") {   swal("Error !!!", "Không được để trống !", "error");   return; }       $.ajax({     type: "POST",      url: "../survey/mod-update-group.php",        data: {    post: post,   comment: comment },   success: function(data) {      $("#update-ex' + id_group + '").html("<b>Cập nhật thành công</b>");   setTimeout(() => {      $("#update-ex' + id_group + '").html("");   }, 1500);      }    });   }); $("#update-ex' + id_group + '").css("color","#fff"); <\/script><div class="group-content"> <div class="form-group" style="position:relative;"> <div id="fquestion-' + id_question + '"> <div class="box-question"> <label for="comment-' + id_question + '">Nội dung câu hỏi:</label> <span> <button type="button" onclick="delete_question(' + id_question + ',' + id_group + ')" class="btn btn-danger delete-group" >Xóa câu này</button></span> <textarea required name="question_title[]" class="form-control" rows="5" id="comment-' + id_question + '"></textarea> </div> </div> <input type="hidden" id="question_number-' + id_group + '" name="question_number[]" value="1"> <div id="show_question-' + id_group + '"></div>  <script>    $("#comment-' + id_question + '").on("change", function() {     var post = ' + id_question + ';        var comment = $.trim($(this).val());       if (comment == "") {         swal("Error !!!", "Không được để trống !", "error");          return;          }      $.ajax({       type: "POST",       url: "../survey/mod-update-question.php",         data: {        post: post,      comment: comment      },      success: function(data) {       $("#update-comment-' + id_question + '").html("<b>Cập nhật thành công</b>");      setTimeout(() => {         $("#update-comment-' + id_question + '").html("");       }, 1500);     }  });    });    $("#update-ex' + id_question + '").css("color","red");  <\/script> </div> <button type="button" class="btn btn-primary pqt-btn" onclick="add_question(' + id_group + ');">Thêm câu hỏi mới</button> <span>Cho phép người dùng thêm ý kiến<span> <div> <input type="hidden" name="vote_' + id_group + '" value="0"> <input value="1" checked name="vote_' + id_group + '" type="checkbox" id="cbx-' + id_group + '" style="display:none" /> <label for="cbx-' + id_group + '" class="toggle"> <span> <svg width="10px" height="10px" viewBox="0 0 10 10"> <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>  </svg> </span> </label>  </div> <script>  $("#cbx-' + id_group + '").on("change", function() {   var post = ' + id_group + ';   var apply = $(this).is(":checked") ? 1 : 0;   $.ajax({       type: "POST",           url: "../survey/mod-update-checkbox.php",         data: {          post: post,     apply: apply   },   success: function(data) {            swal("Done !!!", "Cập nhật thành công!", "success");     }    });    });  <\/script></div> </div></div> <style>   #cbx-' + id_group + ':checked + .toggle:before { background: #52d66b; } #cbx-' + id_group + ':checked + .toggle span { transform: translateX(18px); } #cbx-' + id_group + ':checked + .toggle span path {   stroke: #52d66b;   stroke-dasharray: 25;   stroke-dashoffset: 25; } </style>').insertBefore("#show_group");
+                $('<div id="fgroup-' + id_group + '"><br /><h3> Nhóm câu hỏi </h3><div class="group">  <div class="group-title">  <span>    <div class="col-xs-4"> <label for="ex' + id_group + '">Tiêu đề nhóm câu khảo sát.</label> <input class="form-control" required name="group_title[]" id="ex' + id_group + '" type="text"> <span id="update-ex' + id_group + '"> </span> </div>  </span> <span> <button class="btn btn-danger delete-group" onclick="delete_group(' + id_group + ')" >Xóa nhóm này</button></span> </div> <script> $("#ex' + id_group + '").on("change", function() { var post = ' + id_group + ';   var comment = $.trim($(this).val()); if (comment == "") {   swal("Error !!!", "Không được để trống !", "error");   return; }       $.ajax({     type: "POST",      url: "../survey/mod-update-group.php",        data: {    post: post,   comment: comment },   success: function(data) {      $("#update-ex' + id_group + '").html("<b>Cập nhật thành công</b>");   setTimeout(() => {      $("#update-ex' + id_group + '").html("");   }, 1500);      }    });   }); $("#update-ex' + id_group + '").css("color","#fff"); <\/script><div class="group-content"> <div class="form-group" style="position:relative;"> <div id="fquestion-' + id_question + '"> <div class="box-question"> <label for="comment-' + id_question + '">Nội dung câu hỏi:</label> <span> <button type="button" onclick="delete_question(' + id_question + ',' + id_group + ')" class="btn btn-danger delete-group" >Xóa câu này</button></span> <textarea required name="question_title_' + id_question + '" class="form-control" rows="5" id="comment-' + id_question + '"></textarea> <span id="update-comment-' + id_question + '"> </span><script>    $("#comment-' + id_question + '").on("change", function() {     var post = ' + id_question + ';        var comment = $.trim($(this).val());       if (comment == "") {         swal("Error !!!", "Không được để trống !", "error");          return;          }      $.ajax({       type: "POST",       url: "../survey/mod-update-question.php",         data: {        post: post,      comment: comment      },      success: function(data) {       $("#update-comment-' + id_question + '").html("<b>Cập nhật thành công</b>");      setTimeout(() => {         $("#update-comment-' + id_question + '").html("");       }, 1500);     }  });    });    $("#update-comment-' + id_question + '").css("color","red");  <\/script> </div> </div> <input type="hidden" id="question_number-' + id_group + '" name="question_number[]" value="1"> <div id="show_question-' + id_group + '"></div>  </div> <button type="button" class="btn btn-primary pqt-btn" onclick="add_question(' + id_group + ');">Thêm câu hỏi mới</button> <span>Cho phép người dùng thêm ý kiến<span> <div> <input type="hidden" name="vote_' + id_group + '" value="0"> <input value="1" checked name="vote_' + id_group + '" type="checkbox" id="cbx-' + id_group + '" style="display:none" /> <label for="cbx-' + id_group + '" class="toggle"> <span> <svg width="10px" height="10px" viewBox="0 0 10 10"> <path d="M5,1 L5,1 C2.790861,1 1,2.790861 1,5 L1,5 C1,7.209139 2.790861,9 5,9 L5,9 C7.209139,9 9,7.209139 9,5 L9,5 C9,2.790861 7.209139,1 5,1 L5,9 L5,1 Z"></path>  </svg> </span> </label>  </div> <script>  $("#cbx-' + id_group + '").on("change", function() {   var post = ' + id_group + ';   var apply = $(this).is(":checked") ? 1 : 0;   $.ajax({       type: "POST",           url: "../survey/mod-update-checkbox.php",         data: {          post: post,     apply: apply   },   success: function(data) {            swal("Done !!!", "Cập nhật thành công!", "success");     }    });    });  <\/script></div> </div></div> <style>   #cbx-' + id_group + ':checked + .toggle:before { background: #52d66b; } #cbx-' + id_group + ':checked + .toggle span { transform: translateX(18px); } #cbx-' + id_group + ':checked + .toggle span path {   stroke: #52d66b;   stroke-dasharray: 25;   stroke-dashoffset: 25; } </style>').insertBefore("#show_group");
 
             }
         });
@@ -276,7 +311,7 @@ pqt_permission();
     });
 
     function delete_group(id) {
-        var id_survey = <?php echo $idsurvey; ?>;
+        var id_survey = <?php echo $survey_id; ?>;
         $.ajax({
             type: "POST",
             url: "<?php echo $baseurl ?>/survey/mod-delete-group.php",
@@ -313,7 +348,7 @@ pqt_permission();
                 question_number = $("#question_number-" + id + "").val();
                 question_number++;
                 $("#question_number-" + id + "").val(question_number);
-                $('<div id="fquestion-' + id_post + '"><div class="box-question" ><label for="comment-' + id_post + '">Nội dung câu hỏi:</label> <span> <button type="button" class="btn btn-danger delete-group" onclick="delete_question(' + id_post + ',' + id + ')">Xóa câu này</button></span>  <textarea name="question_title_' + id_post + '[]" class="form-control" rows="5" id="comment-' + id_post + '"></textarea></div></div>').insertBefore("#show_question-" + id + "");
+                $('<div id="fquestion-' + id_post + '"><div class="box-question" ><label for="comment-' + id_post + '">Nội dung câu hỏi:</label> <span> <button type="button" class="btn btn-danger delete-group" onclick="delete_question(' + id_post + ',' + id + ')">Xóa câu này</button></span>  <textarea name="question_title_' + id_post + '[]" class="form-control" rows="5" id="comment-' + id_post + '"></textarea><span id="update-comment-' + id_post + '"> </span><script>    $("#comment-' + id_post + '").on("change", function() {     var post = ' + id_post + ';        var comment = $.trim($(this).val());       if (comment == "") {         swal("Error !!!", "Không được để trống !", "error");          return;          }      $.ajax({       type: "POST",       url: "../survey/mod-update-question.php",         data: {        post: post,      comment: comment      },      success: function(data) {       $("#update-comment-' + id_post + '").html("<b>Cập nhật thành công</b>");      setTimeout(() => {         $("#update-comment-' + id_post + '").html("");       }, 1500);     }  });    });    $("#update-comment-' + id_post + '").css("color","red");  <\/script> </div></div>').insertBefore("#show_question-" + id + "");
                 swal("Chúc mừng !!!", "Thêm câu hỏi thành công", "success");
 
             }
