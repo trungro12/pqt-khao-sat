@@ -77,7 +77,7 @@ $baseurl = pqt_baseurl();
                 survey_group varchar(255) not null,
                 date TIMESTAMP,
                 vote tinyint,
-                numvote tinyint
+                score tinyint
                 )";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng groups thành công !!!";
@@ -88,7 +88,8 @@ $baseurl = pqt_baseurl();
                     group_title varchar(255) not null,
                     date TIMESTAMP,
                     group_question varchar(100),
-                    vote tinyint
+                    vote tinyint,
+                    custom_vote text
                     )";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng groups thành công !!!";
@@ -98,6 +99,8 @@ $baseurl = pqt_baseurl();
             $sql = "Create table IF NOT EXISTS survey_questions(
                         question_id int primary key AUTO_INCREMENT,
                         question_title varchar(255) not null,
+                        vote tinyint,
+                        score tinyint,
                         date TIMESTAMP
                         )";
             if (mysqli_query($conn, $sql)) {

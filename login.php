@@ -1,4 +1,10 @@
-<?php include 'header.php' ?>
+<?php include 'header.php';
+if(is_admin()) 
+{
+    header("Location: ".$baseurl);
+}
+
+?>
 <div class="introduce">
     <h3>Phần mềm khảo sát miễn phí</h3>
     <p class='des'>Một phần mềm giúp thu thập, đánh giá chất lượng, ý kiến của từng người trong một tập thể. Từ những

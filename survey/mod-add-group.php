@@ -1,5 +1,6 @@
 
 <?php 
+
 include '../db/connect.php';
  // add -> insert group
 $idsurvey = $_POST['idsurvey'];
@@ -18,6 +19,6 @@ $query = mysqli_query($conn, $stringSQL);
 $stringSQL = "update survey set survey_group = CONCAT(survey_group, '" . $id_group . "','-pqt-') where survey_id = " . $idsurvey . "";
 $query = mysqli_query($conn, $stringSQL);
 
-$arr[] = array("id_group" => $id_group,"id_question" => $id_question);
-return json_encode($arr);
+$arr = array("id_groups" => intval($id_group),"id_questions" => intval($id_question));
+echo json_encode($arr);
 ?>

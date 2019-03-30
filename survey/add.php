@@ -7,8 +7,10 @@ pqt_permission();
         <form action="" method="POST">
             <div class="form-group" style='position:relative;'>
                 <div class="col-xs-12">
-                    <label for="survey_title" style='text-align:center;font-weight: bold;font-size: 25px;'>Tiêu đề khảo sát</label>
-                    <input required name="survey_title" class="form-control" id="survey_title" type="text">
+                    <div class="introduce">
+                        <label for="survey_title" style='text-align:center;font-weight: bold;font-size: 25px;'>Tiêu đề khảo sát</label>
+                        <input required name="survey_title" class="form-control" id="survey_title" type="text">
+                    </div>
                 </div>
             </div>
             <div class="survey-content">
@@ -23,7 +25,7 @@ pqt_permission();
                                     <input required name="group_title[]" class="form-control" id="ex0" type="text">
                                 </div>
                             </span>
-                            <span> <button onclick="delete_group(0)" class='btn btn-danger delete-group' >Xóa nhóm này</button></span>
+                            <span> <button onclick="delete_group(0)" class='btn btn-danger delete-group'>Xóa nhóm này</button></span>
                         </div>
                         <div class="group-content">
                             <div class="form-group" style='position:relative;'>
@@ -118,7 +120,7 @@ if (isset($_POST['submit'])) {
     $count = 0;
     $k = 0;
     $surveytitle = $_POST['survey_title'];
-    $stringSQL = "insert INTO survey(survey_title,survey_group,date,vote,numvote) values('" . $surveytitle . "','',now(),0,0)";
+    $stringSQL = "insert INTO survey(survey_title,survey_group,date,vote,score) values('" . $surveytitle . "','',now(),0,0)";
     $query = mysqli_query($conn, $stringSQL);
     if (!$query) {
         echo '<script>
@@ -183,10 +185,14 @@ if (isset($_POST['submit'])) {
                 $stringSQL = "update survey set survey_group = CONCAT(survey_group, '" . $idgroup . "','-pqt-') where survey_id = " . $idsurvey . "";
                 $query = mysqli_query($conn, $stringSQL);
             }
-            echo '<script> swal("Thành công !!!", "Thêm khảo sát thành công!!!", "success");  </script>';
+           
             $count = $number_question;
             $k++;
         }
+        $here = "<a href='".$baseurl."/survey/edit.php?survey_id=".$idsurvey."'>Xem tại đây</a>";
+        echo '<script> swal({title: "Thành công !!!",html:true,text: "Thêm khảo sát thành công!!!\n '.$here.'", type:"success"});  </script>';
+
+        
     }
 }
 ?> 

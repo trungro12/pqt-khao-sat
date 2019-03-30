@@ -4,6 +4,9 @@ pqt_permission();
 
 
 <div class="page-content">
+<div class="introduce">
+<h2>Survey Control Panel</h2>
+</div>
     <a class='btn btn-success pqt-btn' href="<?php echo $baseurl; ?>/survey/add.php">Tạo khảo sát mới</a>
     <div class="container">
         <div class="row survey-content">
@@ -13,7 +16,7 @@ pqt_permission();
             while ($data = mysqli_fetch_array($query)) {
                     ?>
 
-            <div class="col-xs-6 col-md-3 text-center item">
+            <div class="col-xs-6 col-md-3 text-center item" id="survey-<?php echo $data['survey_id'];?>" >
                 <a href="#">
                     <img src="<?php echo $baseurl; ?>/images/survey-icon-blue.png" alt="#">
                     <p class='survey-name'><?php echo $data['survey_title'];?></p>

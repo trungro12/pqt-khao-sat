@@ -9,6 +9,6 @@ $idGroup = $_POST['id'];
 
  $stringSQL = "update survey_groups set group_question = CONCAT(group_question,'" . $id_question . "','-pqt-') where group_id=" . $idGroup . "";
  $query = mysqli_query($conn, $stringSQL);
-return $id_question;
+echo $id_question;
 
 ?>
