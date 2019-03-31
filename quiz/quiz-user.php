@@ -131,7 +131,7 @@
             <div class="survey-content">
 
                 <!-- html -->
-                <div id='fgroup-<?php echo $id_group; ?>'>
+                <div id='fgroup-0'>
 
                     <div class="group">
                         <div class="group-title">
@@ -150,66 +150,181 @@
                                         <th>Họ và tên</th>
                                         <th>Lớp học</th>
                                         <th>Mã số sinh viên</th>
+                                        <th>Điểm</th>
                                     </tr>
                                     <?php
                                     $quiz_id = $_GET['quiz_id'];
-                                    $stringSQL = "select * from quiz_user where quiz_id like %" . $quiz_id . "-pqt-%";
-                                    $dataUser = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
+                                    $stringSQL = "select * from quiz_user where quiz_id = " . $quiz_id . "";
+                                    $query = mysqli_query($conn, $stringSQL);
+                                    // $dataUser = mysqli_fetch_array($query);
+                                    // print_r($dataUser);
                                     if (!is_admin()) {
-                                            if (!$dataUser) {
-                                                    echo '<script> swal("Lỗi !!!", "Không có dữ liệu!!!", "error");  </script>';
-                                                    exit;
-                                                }
+                                        if (!$dataUser) {
+                                            echo '<script> swal("Lỗi !!!", "Không có dữ liệu!!!", "error");  </script>';
+                                            exit;
                                         }
-                                    foreach ($dataUser as $User) {
-
-                                        if ($idUser == "" || $idUser == null) {
-                                            continue;
+                                    }
+                                    while($dataUser = mysqli_fetch_array($query)) {
+                                        $user_id = $dataUser['user_id'];
                                             ?>
                                     <!-- html -->
 
-                                    <tbody id="quiz-user<?php echo $User['user_id']; ?>">
-                                        <div class="box-question">
-                                            <span> <button style="top:0;" type='button' onclick="delete_result(<?php echo $User['user_id']; ?>)" class='btn btn-danger delete-group'>Xóa thành viên này</button></span>
-                                            <textarea style="max-width: 1000px;" required name="user_title_<?php echo $User['user_id']; ?>" class="form-control" rows="5" id="comment-<?php echo $User['user_id']; ?>"><?php echo  $User['user_id']; ?></textarea>
-                                            <span id="update-comment-<?php echo $User['user_id']; ?>"> </span>
-                                            <script>
-                                                $("#comment-<?php echo $User['user_id']; ?>").on("change", function() {
-                                                    var post = <?php echo $User['user_id']; ?>;
-                                                    var comment = $.trim($(this).val());
-                                                    if (comment == "") {
-                                                        swal("Error !!!", "Không được để trống !", "error");
-                                                        return;
-                                                    }
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        url: "../quiz/mod-update-result.php",
-                                                        data: {
-                                                            post: post,
-                                                            comment: comment
-                                                        },
-                                                        success: function(data) {
+                                    <tbody id="quiz-user<?php echo $user_id; ?>">
+                                        <tr>
+                                            <td>
+                                                <div class="box-question">
+                                                   
+                                                    <input style="max-width: 1000px;" name="user_name_<?php echo $user_id; ?>" class="form-control" value="<?php echo  $dataUser['user_name']; ?>" id="name-<?php echo $user_id; ?>">
+                                                    <span id="update-name-<?php echo $user_id; ?>"> </span>
+                                                    <script>
+                                                        $("#name-<?php echo $user_id; ?>").on("change", function() {
+                                                            var post = <?php echo $user_id; ?>;
+                                                            var comment = $.trim($(this).val());
+                                                            var col = "user_name";
+                                                            if (comment == "") {
+                                                                swal("Error !!!", "Không được để trống !", "error");
+                                                                return;
+                                                            }
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: "../quiz/mod-update-user.php",
+                                                                data: {
+                                                                    post: post,
+                                                                    comment: comment,
+                                                                    col:col
+                                                                },
+                                                                success: function(data) {
 
-                                                            $("#update-comment-<?php echo $id_result; ?>").html("<b>Cập nhật thành công</b>");
-                                                            setTimeout(() => {
-                                                                $("#update-comment-<?php echo $id_result; ?>").html("");
-                                                            }, 1500);
+                                                                    $("#update-name-<?php echo $user_id; ?>").html("<b>Cập nhật thành công</b>");
+                                                                    setTimeout(() => {
+                                                                        $("#update-name-<?php echo $user_id; ?>").html("");
+                                                                    }, 1500);
 
-                                                        }
-                                                    });
-                                                });
-                                                $("#update-comment-<?php echo $id_result; ?>").css("color", "red");
-                                            </script>
+                                                                }
+                                                            });
+                                                        });
+                                                        $("#update-name-<?php echo $user_id; ?>").css("color", "red");
+                                                    </script>
+                                                </div>
+                                            </td>
 
+                                            <td>
+                                                <div class="box-question">
+                                                   
+                                                    <input style="max-width: 1000px;" name="user_class_<?php echo $user_id; ?>" class="form-control" value="<?php echo  $dataUser['user_class']; ?>" rows="5" id="class-<?php echo $user_id; ?>">
+                                                    <span id="update-class-<?php echo $user_id; ?>"> </span>
+                                                    <script>
+                                                        $("#class-<?php echo $user_id; ?>").on("change", function() {
+                                                            var post = <?php echo $user_id; ?>;
+                                                            var comment = $.trim($(this).val());
+                                                            var col = "user_class";
+                                                            if (comment == "") {
+                                                                swal("Error !!!", "Không được để trống !", "error");
+                                                                return;
+                                                            }
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: "../quiz/mod-update-user.php",
+                                                                data: {
+                                                                    post: post,
+                                                                    comment: comment,
+                                                                    col:col
+                                                                },
+                                                                success: function(data) {
 
+                                                                    $("#update-class-<?php echo $user_id; ?>").html("<b>Cập nhật thành công</b>");
+                                                                    setTimeout(() => {
+                                                                        $("#update-class-<?php echo $user_id; ?>").html("");
+                                                                    }, 1500);
 
+                                                                }
+                                                            });
+                                                        });
+                                                        $("#update-class-<?php echo $user_id; ?>").css("color", "red");
+                                                    </script>
+                                                </div>
+                                            </td>
 
-                                        </div>
+                                            <td>
+                                                <div class="box-question">
+                                                  
+                                                    <input style="max-width: 1000px;" name="user_mssv_<?php echo $user_id; ?>" class="form-control" value="<?php echo  $dataUser['user_mssv']; ?>" id="mssv-<?php echo $user_id; ?>">
+                                                    <span id="update-mssv-<?php echo $user_id; ?>"> </span>
+                                                    <script>
+                                                        $("#mssv-<?php echo $user_id; ?>").on("change", function() {
+                                                            var post = <?php echo $user_id; ?>;
+                                                            var comment = $.trim($(this).val());
+                                                            var col = "user_mssv";
+                                                            if (comment == "") {
+                                                                swal("Error !!!", "Không được để trống !", "error");
+                                                                return;
+                                                            }
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: "../quiz/mod-update-user.php",
+                                                                data: {
+                                                                    post: post,
+                                                                    comment: comment,
+                                                                    col:col
+                                                                },
+                                                                success: function(data) {
 
+                                                                    $("#update-mssv-<?php echo $user_id; ?>").html("<b>Cập nhật thành công</b>");
+                                                                    setTimeout(() => {
+                                                                        $("#update-mssv-<?php echo $user_id; ?>").html("");
+                                                                    }, 1500);
+
+                                                                }
+                                                            });
+                                                        });
+                                                        $("#update-mssv-<?php echo $user_id; ?>").css("color", "red");
+                                                    </script>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="box-question">
+                                                    <span> <button style="top:0;" type='button' onclick="delete_user(<?php echo $user_id; ?>)" class='btn btn-danger delete-group'>Xóa</button></span>
+                                                    <input style="max-width: 1000px;" name="user_score_<?php echo $user_id; ?>" class="form-control" value="<?php echo  $dataUser['score']; ?>" id="score-<?php echo $user_id; ?>">
+                                                    <span id="update-score-<?php echo $user_id; ?>"> </span>
+                                                    <script>
+                                                        $("#score-<?php echo $user_id; ?>").on("change", function() {
+                                                            var post = <?php echo $user_id; ?>;
+                                                            var comment = $.trim($(this).val());
+                                                            var col = "score";
+                                                            var isnum = 1;
+                                                            if (comment == "") {
+                                                                swal("Error !!!", "Không được để trống !", "error");
+                                                                return;
+                                                            }
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: "../quiz/mod-update-user.php",
+                                                                data: {
+                                                                    post: post,
+                                                                    comment: comment,
+                                                                    col:col,
+                                                                    isnum:isnum
+                                                                },
+                                                                success: function(data) {
+
+                                                                    $("#update-score-<?php echo $user_id; ?>").html("<b>Cập nhật thành công</b>");
+                                                                    setTimeout(() => {
+                                                                        $("#update-score-<?php echo $user_id; ?>").html("");
+                                                                    }, 1500);
+
+                                                                }
+                                                            });
+                                                        });
+                                                        $("#update-score-<?php echo $user_id; ?>").css("color", "red");
+                                                    </script>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                     <?php
 
-                                }
+                              
                             }
                             ?>
                                     <tbody id='show_question-<?php echo  $quiz_id; ?>'>
@@ -285,7 +400,7 @@
     var id_result = <?php echo $last_id_result ?>;
     var quiz_id = <?php echo $quiz_id ?>;
 
-   
+
 
     // Add, Delete Question 
 
@@ -304,8 +419,8 @@
             },
             success: function(data) {
                 id_result = parseInt(data);
-                $('<tbody id="fquestion-' + id_result + '"> <tr><td> <div class="box-question"> <span> <button onclick="delete_result(' + id_result + ',' + id + ')" class="btn btn-danger delete-group" style="top : 0;" type="button">Xóa kết quả này</button></span> <textarea style="max-width: 1000px;" required name="result_title[]" class="form-control" rows="5" id="comment-' + id_result + '"></textarea>  <span id="update-comment-' + id_result + '"> </span><script>    $("#comment-' + id_result + '").on("change", function() {     var post = ' + id_result + ';        var comment = $.trim($(this).val());       if (comment == "") {         swal("Error !!!", "Không được để trống !", "error");          return;          }      $.ajax({       type: "POST",       url: "../quiz/mod-update-result.php",         data: {        post: post,      comment: comment      },      success: function(data) {       $("#update-comment-' + id_result + '").html("<b>Cập nhật thành công</b>");      setTimeout(() => {         $("#update-comment-' + id_result + '").html("");       }, 1500);     }  });    });    $("#update-comment-' + id_result + '").css("color","red");  <\/script> </div>   </td> <td> <div class="cntr"> <label for="true_' + id_result + '" class="radio"><input type="radio" name="true_' + id + '" id="true_' + id_result + '" value="' + id_result + '" class="hidden" /> <span class="label"></span>   </label> </div>  </td> </tr> </tbody>').insertBefore("#show_question-" + id + "");
-                swal("Chúc mừng !!!", "Thêm đáp án thành công", "success");
+                $('<tbody id="quiz-user'+id+'"> <tr>  <td>      <div class="box-question">             <input style="max-width: 1000px;" name="user_name_'+id+'" class="form-control" value="" id="name-'+id+'">  <span id="update-name-'+id+'"> </span> <script>             $("#name-'+id+'").on("change", function() {          var post = '+id+';       var comment = $.trim($(this).val());      var col = "user_name";      if (comment == "") {      swal("Error !!!", "Không được để trống !", "error");        return;      }       $.ajax({    type: "POST",      url: "../quiz/mod-update-user.php",     data: {      post: post,     comment: comment,      col:col       },    success: function(data) {      $("#update-name-'+id+'").html("<b>Cập nhật thành công</b>");   setTimeout(() => {     $("#update-name-'+id+'").html("");    }, 1500);      }     });       });         $("#update-name-'+id+'").css("color", "red");    <\/script>    </div>         </td>          <td>   <div class="box-question">    <input style="max-width: 1000px;" name="user_class_'+id+'" class="form-control" value=""  id="class-'+id+'">                    <span id="update-class-'+id+'"> </span>   <script>       $("#class-'+id+'").on("change", function() {      var post = '+id+';     var comment = $.trim($(this).val());      var col = "user_class";      if (comment == "") {       swal("Error !!!", "Không được để trống !", "error");     return;         }        $.ajax({        type: "POST",        url: "../quiz/mod-update-user.php",        data: {         post: post,        comment: comment,       col:col      },   success: function(data) {     $("#update-class-'+id+'").html("<b>Cập nhật thành công</b>");       setTimeout(() => {    $("#update-class-'+id+'").html("");      }, 1500);        }        });   });   $("#update-class-'+id+'").css("color", "red");    <\/script>      </div>        </td>         <td>     <div class="box-question">   <input style="max-width: 1000px;" name="user_mssv_'+id+'" class="form-control" value="" id="mssv-'+id+'">      <span id="update-mssv-'+id+'"> </span>   <script>       $("#mssv-'+id+'").on("change", function() {  var post = '+id+';  var comment = $.trim($(this).val());     var col = "user_mssv";        if (comment == "") {      swal("Error !!!", "Không được để trống !", "error");        return;              }         $.ajax({               type: "POST",                url: "../quiz/mod-update-user.php",         data: {             post: post,        comment: comment,              col:col               },     success: function(data) {  $("#update-mssv-'+id+'").html("<b>Cập nhật thành công</b>");       setTimeout(() => {  $("#update-mssv-'+id+'").html("");      }, 1500);          }      });          });       $("#update-mssv-'+id+'").css("color", "red");     <\/script>    </div>      </td>        <td>     <div class="box-question">   <span> <button style="top:0;" type="button" onclick="delete_user('+id+')" class="btn btn-danger delete-group">Xóa</button></span><input style="max-width: 1000px;" name="user_score_'+id+'" class="form-control" value="" id="score-'+id+'">    <span id="update-score-'+id+'"> </span> <script> $("#score-'+id+'").on("change", function() { var post = '+id+'; var comment = $.trim($(this).val()); var col = "score"; var isnum = 1; if (comment == "") { swal("Error !!!", "Không được để trống !", "error"); return; } $.ajax({ type: "POST", url: "../quiz/mod-update-user.php", data: { post: post, comment: comment, col:col, isnum:isnum }, success: function(data) { $("#update-score-'+id+'").html("<b>Cập nhật thành công</b>"); setTimeout(() => { $("#update-score-'+id+'").html(""); }, 1500); } }); }); $("#update-score-'+id+'").css("color", "red"); <\/script> </div> </td> </tr> </tbody>').insertBefore("#show_question-" + id + "");
+                swal("Chúc mừng !!!", "Thêm thành viên", "success");
 
             }
         });
@@ -313,19 +428,15 @@
     };
 
 
-    function delete_result(id, id_group) {
+    function delete_user(id) {
         $.ajax({
             type: "POST",
-            url: "<?php echo $baseurl ?>/quiz/mod-delete-result.php",
+            url: "<?php echo $baseurl ?>/quiz/mod-delete-user.php",
             data: {
                 id: id,
-                id_group: id_group
             },
             success: function(data) {
-                result_number = $("#result_number-" + id_group + "").val();
-                result_number--;
-                $("#result_number-" + id_group + "").val(result_number);
-                $("#fquestion-" + id + "").remove();
+                $("#quiz-user" + id + "").remove();
                 swal("Chúc mừng !!!", "Bạn đã xóa thành công!", "success");
 
             }
