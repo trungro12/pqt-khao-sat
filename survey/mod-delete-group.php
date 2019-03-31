@@ -6,7 +6,7 @@ $idGroup = $_POST['id'];
 $id_survey = $_POST['id_survey'];
 
  // delete  question
-$stringSQL = "select * from survey_questions where question_id=" . $idGroup . "";
+$stringSQL = "select * from survey_groups where group_id=" . $idGroup . "";
 $query = mysqli_query($conn, $stringSQL);
 $data = mysqli_fetch_array($query);
 

@@ -37,7 +37,7 @@
 
                                 ?>
                         <a href="<?php echo $baseurl; ?>/survey/edit.php?survey_id=<?php echo $survey_id; ?>" class='btn btn-primary'>Sửa</a>
-                        <button id="delete_survey" class='btn btn-danger'>Sửa</button>
+                        <button id="delete_survey" type="button" class='btn btn-danger'>Xóa</button>
                         <?php
 
                     }
@@ -210,10 +210,9 @@
    $(document).ready(function(){
     $("#delete_survey").click(function() {
         var cf = confirm("Bạn có chắc muốn xóa?");
+        var this_url = window.location.href;
         if (cf != true) return;
         else {
-            var this_url = window.location.href;
-            $(".page-content").css("display","none");
             $.ajax({
                 url: "../survey/delete.php",
                 type: "POST",
@@ -221,7 +220,7 @@
                     id: local_survey_id
                 },
                 success: function(data) {
-                    $(".page-content").css("display","none");
+                   document.location.href= this_url;
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     swal("Error!", "Lỗi khi xóa, hãy thử lại sau!", "error");
@@ -262,7 +261,7 @@ if (isset($_POST['submit'])) {
                 $question_data = mysqli_fetch_array($query);
                 $get_score = (floatval($_POST["score_$item"]) * 100) / 4;
                 if (!$get_score) {
-                    echo '<script>swal("Lỗi !!!", "Vui lòng chọn 1 trong 4 ô....", "error"); </script>';
+                    echo '<script>swal("Lỗi !!!", "Vui lòng chọn 1 trong 4 ô, không được để trống.", "error"); </script>';
                     exit;
                 }
                 $score_question = (!isset($question_data['score']) || $question_data['score'] == null) ? 100 : $question_data['score'];

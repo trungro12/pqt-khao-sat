@@ -35,11 +35,12 @@ $baseurl = pqt_baseurl();
             </div>
         </div>
     </header>
-
+    <div class="old-form">
     <div class="pqt-form">
         <div class="pqt-title">
             <h2>Cài đặt, cấu hình kết nối tới Database</h2>
         </div>
+      
         <div class="pqt-content">
             <form action="" method="POST">
                 <label for="host">Host :</label>
@@ -56,6 +57,7 @@ $baseurl = pqt_baseurl();
                 <input required="" type="password" id="password" name="password">
                 <button type="submit" class="pqt-btn blue" name="submit">Cài đặt</button>
             </form>
+        </div>
         </div>
     </div>
     <?php
@@ -76,11 +78,11 @@ $baseurl = pqt_baseurl();
                 survey_title varchar(255) not null,
                 survey_group varchar(255) not null,
                 date TIMESTAMP,
-                vote tinyint,
+                vote int,
                 score float
                 )";
             if (mysqli_query($conn, $sql)) {
-                echo "Tạo bảng groups thành công !!!";
+                echo "Tạo bảng Survey thành công !!!";
             }
 
             $sql = "Create table IF NOT EXISTS survey_groups(
@@ -88,7 +90,7 @@ $baseurl = pqt_baseurl();
                     group_title varchar(255) not null,
                     date TIMESTAMP,
                     group_question varchar(100),
-                    vote tinyint,
+                    vote int,
                     custom_vote text
                     )";
             if (mysqli_query($conn, $sql)) {
@@ -99,12 +101,59 @@ $baseurl = pqt_baseurl();
             $sql = "Create table IF NOT EXISTS survey_questions(
                         question_id int primary key AUTO_INCREMENT,
                         question_title varchar(255) not null,
-                        vote tinyint,
+                        vote int,
                         score float,
                         date TIMESTAMP
                         )";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng questions thành công !!!";
+            }
+
+
+            $sql = "Create table IF NOT EXISTS quiz(
+                quiz_id int primary key AUTO_INCREMENT,
+                quiz_title longtext not null,
+                quiz_group varchar(255) not null,
+                date TIMESTAMP,
+                time int,
+                public tinyint
+                )";
+            if (mysqli_query($conn, $sql)) {
+                echo "Tạo bảng Quiz thành công !!!";
+            }
+
+            $sql = "Create table IF NOT EXISTS quiz_groups(
+                group_id int primary key AUTO_INCREMENT,
+                group_title longtext not null,
+                date TIMESTAMP,
+                group_result text,
+                true_result tinyint
+                )";
+
+            if (mysqli_query($conn, $sql)) {
+                echo "Tạo bảng quiz_groups thành công !!!";
+            }
+
+            $sql = "Create table IF NOT EXISTS quiz_result(
+                    result_id int primary key AUTO_INCREMENT,
+                    result_title longtext not null,
+                    date TIMESTAMP
+                    )";
+            if (mysqli_query($conn, $sql)) {
+                echo "Tạo bảng quiz_result thành công !!!";
+            }
+
+            $sql = "Create table IF NOT EXISTS quiz_user(
+                user_id int primary key AUTO_INCREMENT,
+                user_name varchar(255) not null,
+                user_class varchar(255) not null,
+                user_mssv varchar(255) not null,
+                quiz_id int,
+                score float,
+                date TIMESTAMP
+                )";
+            if (mysqli_query($conn, $sql)) {
+                echo "Tạo bảng quiz_user thành công !!!";
             }
 
             $sql = "Create table IF NOT EXISTS admin(

@@ -124,7 +124,7 @@ if (isset($_POST['submit'])) {
     $query = mysqli_query($conn, $stringSQL);
     if (!$query) {
         echo '<script>
-    swal("Lỗi !!!", "Có lỗi khi thêm Thảo sát", "error");
+    swal("Lỗi !!!", "Có lỗi khi thêm Khảo sát", "error");
 </script>';
         exit;
     } else {

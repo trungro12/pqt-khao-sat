@@ -76,8 +76,9 @@ strong,b,h1,h2,h3,h4,h5{font-weight:500!important}
 
 .survey-content{
     margin-top : 50px;
+    border-top: 1px solid #e8e3e3;
 }
-.survey-content h3{text-align:center;}
+.survey-content h3, .survey-content h2{text-align:center;}
 .pqt-btn{
     display: block;
     text-align: center;
@@ -118,6 +119,7 @@ position: relative;
 }
 .box-question .delete-group{
     top : 30;
+    opacity: .7;
 }
 .title-input{
     margin-top: -5px;
@@ -223,13 +225,13 @@ position: relative;
     text-align: center;
     background: #fff;
 }
-.pqt-form .pqt-content form label {
+.old-form .pqt-form .pqt-content form label {
     margin: 0;
     font-weight: 600;
     display: block;
     margin-bottom: -30px;
 }
-.pqt-form .pqt-content form input {
+.old-form .pqt-form .pqt-content form input {
     width: 100%;
     padding: 4px;
     margin-top: 21px;
@@ -242,14 +244,14 @@ position: relative;
     font-size: 1rem;
     transition: .3s;
 }
-.pqt-form .pqt-content form label {
+.old-form .pqt-form .pqt-content form label {
     margin: 0;
     font-weight: 600;
     display: block;
     margin-bottom: -30px;
     padding: 10px;
 }
-.pqt-form .pqt-content form input {
+.old-form .pqt-form .pqt-content form input {
     width: 100%;
     padding: 4px;
     margin-top: 21px;
@@ -383,3 +385,151 @@ table td{
 .questions{
     min-width: 400px;
 }
+
+
+/* html,body{
+  height:100%;
+}
+body{
+  text-align:center;
+}
+body:before{
+  content:'';
+  height:100%;
+  display:inline-block;
+  vertical-align:middle;
+} */
+.button_css{
+  display: inline-block;
+    margin: 40px;
+    line-height: 60px;
+    border-radius: 3px;
+  text-decoration: none!important;
+  background:#1AAB8A;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.6em;
+  padding:0 2em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+}
+.button_css:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+.button_css:before,.button_css:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+.button_css:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+.button_css:hover:before,.button_css:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
+
+
+
+/* Input Css blue */
+
+.inp {
+  position: relative;
+  margin: auto;
+  width: 100%;
+}
+.inp .label {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  font-size: 16px;
+  color: #9098a9;
+  font-weight: 500;
+  transform-origin: 0 0;
+  transition: all 0.2s ease;
+}
+.inp .border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: #07f;
+  transform: scaleX(0);
+  transform-origin: 0 0;
+  transition: all 0.15s ease;
+}
+.inp input {
+  -webkit-appearance: none;
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  padding: 12px 0;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid #c8ccd4;
+  background: none;
+  border-radius: 0;
+  color: #223254;
+  transition: all 0.15s ease;
+}
+.inp input:hover {
+  background: rgba(34,50,84,0.03);
+}
+.inp input:not(:placeholder-shown) + span {
+  color: #5a667f;
+  transform: translateY(-26px) scale(0.75);
+}
+.inp input:focus {
+  background: none;
+  outline: none;
+}
+.inp input:focus + span {
+  color: #07f;
+  transform: translateY(-26px) scale(0.75);
+}
+.inp input:focus + span + .border {
+  transform: scaleX(1);
+}
+
+
+
+
+/* Show list */
+
+.quiz-list{
+  position: fixed;
+  border-radius: 4px;
+  bottom : 0;
+  right : 0;
+  background: rgb(0, 0, 0);
+  opacity: .7;
+  color:#fff!important;
+}
+.quiz-list a{
+  color:#fff!important;
+}
+.quiz-list ul,.survey-content ul{
+  padding:1em;
+  list-style-type:none!important;
+  counter-reset:nums;    
+}
+.quiz-list li:after,.survey-content li:after{
+  counter-increment:nums;
+    content: " " counter(nums);
+}
+

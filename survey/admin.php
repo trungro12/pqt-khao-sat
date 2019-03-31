@@ -17,7 +17,7 @@ pqt_permission();
                     ?>
 
             <div class="col-xs-6 col-md-3 text-center item" id="survey-<?php echo $data['survey_id'];?>" >
-                <a href="#">
+                <a href="<?php echo $baseurl; ?>/survey/view.php?survey_id=<?php echo $data['survey_id']; ?>">
                     <img src="<?php echo $baseurl; ?>/images/survey-icon-blue.png" alt="#">
                     <p class='survey-name'><?php echo $data['survey_title'];?></p>
                 </a>

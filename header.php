@@ -8,7 +8,7 @@ include $dirhome."/db\/"."connect.php";
 $baseurl = pqt_baseurl();
 ?>
 
-<html lang="en">
+<html lang="en" xmlns:m="http://www.w3.org/1998/Math/MathML">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +21,17 @@ $baseurl = pqt_baseurl();
     <link rel='stylesheet' href='<?php echo $baseurl; ?>/style.css'>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script type="text/javascript">
+MathJax.Hub.Config({
+  jax: ["input/TeX","output/CommonHTML"],
+  extensions: ["tex2jax.js","MathMenu.js","MathZoom.js", "AssistiveMML.js", "a11y/accessibility-menu.js"],
+  TeX: {
+    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+  }
+});
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=default"></script>
+
     <title><?php if(is_survey_panel()) echo "PQT - Survey Control Panel"; else echo "PQT" ?></title>
 </head>
 <body>
@@ -36,7 +47,7 @@ $baseurl = pqt_baseurl();
             if(isset($_SESSION['username']))
             {
                 $admin = $_SESSION['username'];
-                echo "<a class='login btn btn-primary' href='".$baseurl."/survey/admin.php'> ".$admin."</a> 
+                echo "<a class='login btn btn-primary' href='".$baseurl."/admin.php'> ".$admin."</a> 
                 <a class='login btn btn-primary' href='".$baseurl."/logout.php'> Đăng xuất</a> 
                 ";
             }
