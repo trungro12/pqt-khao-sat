@@ -6,23 +6,97 @@
         <p id="show-list"></p>
     </ul>
 </div>
+<?php
+if (isset($_GET['quiz_id'])) {
+    $quiz_id = $_GET['quiz_id'];
+
+
+
+    // System
+    $stringSQL = "select * from quiz where quiz_id=" . $quiz_id;
+    $dataQuiz = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
+    if (!$dataQuiz) {
+        echo '<script> swal("Lỗi !!!", "Đường dẫn sai hoặc đã bị xóa!!!", "error");  </script>';
+        exit;
+    }
+
+    if (!is_admin()) {
+            if ($dataQuiz['public'] < 1) {
+                    echo '<script> swal("Rất tiếc !!!", "Bạn không có quyền xem trang này!!!", "error");  </script>';
+                    exit;
+                }
+        }
+
+    $last_id_result = 0;
+    $time_exam = $dataQuiz['time'];
+    ?>
 <div class="page-content">
     <div class="container">
         <br />
-
         <?php
+        if (isset($_SESSION['user_name']) || is_admin()) {
 
-        if (isset($_GET['quiz_id'])) {
-            $quiz_id = $_GET['quiz_id'];
-            $stringSQL = "select * from quiz where quiz_id=" . $quiz_id;
-            $dataQuiz = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
-            if (!$dataQuiz) {
-                echo '<script> swal("Lỗi !!!", "Đường dẫn sai hoặc đã bị xóa!!!", "error");  </script>';
-                exit;
+            // Check User test exam
+            if (isset($_SESSION['user_score'])) {
+                if ($_SESSION['user_score'] > 0) {
+                    echo '
+                    <script>
+                    var comfi = confirm("Rất tiếc! Bạn đã thi rồi, Để thi lại hãy liên hệ với quản trị viên !!");
+                    </script>
+                    ';
+                    echo '<div class="introduce">
+                    <div class="form-group" style="position:relative;">
+                        <div class="col-xs-12">
+                            <h2>Điểm của thí sinh ' . $_SESSION['user_name'] . ' là <b style="color:#000000">' . $_SESSION['user_score'] . '</b> </h2>
+                        </div>
+                        <br />
+                 
+                    </div>
+                </div>';
+                    exit;
+                }
             }
-            $last_id_group = 0;
-            $last_id_result = 0;
+
+            if (!is_admin()) {
+                echo '
+            <span style="position: fixed;
+            top: 0;
+            left: 30%;
+            background: #e81616;
+            z-index: 99999999;
+            font-weight: 600;
+            color: #fff;
+            padding: 5px;
+            border-radius: 7px;
+            opacity: .8;
+            font-size: 13px;" id="time-show"> </span>
+            <script>
+            var phut = ' . $time_exam . ';
+            var giay = 0;
+
+            function time_exam(){
+                
+                $("#time-show").html("Thời gian còn lại : " + phut + ": "+giay);
+                var settime = setTimeout("time_exam()",1000);
+                giay--;
+                if(giay == -1)
+                {
+                    phut -= 1;
+                    giay = 59;
+                }
+                if(phut == -1)
+                {
+                    $("#submit").click();
+                    clearTimeout(settime);
+                }
+            }
+            time_exam();
+            </script>
+            
+            ';
+            }
             ?>
+        <!-- Content -->
         <!-- html -->
         <form action="" method="POST">
             <div class="introduce">
@@ -36,17 +110,19 @@
                     if (is_admin()) {
 
                         ?>
-                         <a href="<?php echo $baseurl; ?>/quiz/quiz-user.php?quiz_id=<?php echo $quiz_id; ?>" class='btn btn-primary'>Danh sách dự thi</a>
+                    <a href="<?php echo $baseurl; ?>/quiz/quiz-user.php?quiz_id=<?php echo $quiz_id; ?>" class='btn btn-primary'>Danh sách dự thi</a>
                     <a href="<?php echo $baseurl; ?>/quiz/edit.php?quiz_id=<?php echo $quiz_id; ?>" class='btn btn-primary'>Sửa</a>
                     <button id="delete_quiz" type="button" class='btn btn-danger'>Xóa</button>
                     <?php
-
 
                 }
                 ?>
                 </div>
             </div>
             <!-- end update Quiz title -->
+            <?php
+            if (is_admin()) {
+                ?>
 
             <br />
             <!-- update timequiz, public -->
@@ -57,7 +133,7 @@
                     <span class="border"></span>
                     <span id="update-time"> </span>
                 </label>
-                <span>Cho phép xem điểm và kết quả khi thi xong<span>
+                <span>Public (Chế độ mở, thí sinh có thể vào thi)<span>
                         <div>
                             <input type="hidden" name="public" value="0">
                             <input value="1" name="public" type="checkbox" id="cbx" style="display:none" />
@@ -127,6 +203,13 @@
 
             <!-- end update timequiz, public -->
 
+
+            <?php
+
+        }
+        ?>
+
+
             <!-- Update result, insert result************************************************************** -->
             <div class="survey-content">
                 <?php
@@ -137,15 +220,15 @@
 
                 foreach ($array_group as $id_group) {
                     if ($id_group != "" || $id_group != null) {
-                        $stringSQL = "select * from quiz_groups where group_id=" . $id_group."";
+                        $stringSQL = "select * from quiz_groups where group_id=" . $id_group . "";
                         $dataGroup = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
-                        $last_id_group = $id_group;
+
                         ?>
                 <!-- html -->
                 <br />
                 <div id='fgroup-<?php echo $id_group; ?>'>
                     <script>
- $('<li id="s-fgroup-<?php echo $id_group; ?>-li"><a id="s-fgroup-<?php echo $id_group; ?>" href="#fgroup-<?php echo $id_group; ?>">Câu hỏi</a></li>').insertBefore("#show-list");
+                        $('<li id="s-fgroup-<?php echo $id_group; ?>-li"><a id="s-fgroup-<?php echo $id_group; ?>" href="#fgroup-<?php echo $id_group; ?>">Câu hỏi</a></li>').insertBefore("#show-list");
                     </script>
                     <div class="group">
                         <div class="group-title">
@@ -154,7 +237,7 @@
                                     <!-- <label for="ex<?php echo $id_group; ?>">Tiêu đề câu hỏi.</label> -->
                                     <b><?php echo $dataGroup['group_title']; ?></b>
                                     <input required value="<?php echo $dataGroup['group_title']; ?>" name="group_title_<?php echo $id_group; ?>" id="ex<?php echo $id_group; ?>" class="form-control" style="display:none;" type="text">
-                                   
+
                                 </div>
                             </span>
                         </div>
@@ -186,7 +269,7 @@
 
                                                 <div class="box-question">
                                                     <b style="max-width: 1000px;" required name="result_title_<?php echo $id_result; ?>" class="form-control" rows="5" id="comment-<?php echo $id_result; ?>"><?php echo trim($dataResult['result_title']); ?></b>
-                                                   
+
                                                 </div>
                                             </td>
                                             <td>
@@ -197,7 +280,7 @@
                                                         <span class="label"></span>
                                                     </label>
                                                 </div>
-                                                
+
                                             </td>
                                         </tr>
                                     </tbody>
@@ -206,12 +289,12 @@
                                 }
                             }
                             ?>
-                            
+
                                 </table>
                             </div>
 
                             <input type="hidden" id="result_number-<?php echo $id_group; ?>" name="result_number[]" value="<?php echo $result_count; ?>">
-                 
+
                         </div>
                     </div>
                 </div>
@@ -224,128 +307,124 @@
         ?>
 
                 <div id='show_group'></div>
-                <button class='btn btn-primary pqt-btn full' name='submit' type='submit'>Gửi</button>
+                <?php
+                if (!is_admin()) {
+                        ?>
+                <button class='btn btn-primary pqt-btn full' id="submit" name='submit' type='submit'>Gửi</button>
+                <?php
+
+            }
+
+        ?>
 
         </form>
-        <?php
 
-    } else {
-        echo '<script> swal("Lỗi !!!", "Đường dẫn sai hoặc không tồn tại!!!", "error");  </script>';
-    }
-    ?>
+
+        <?php
+        if (isset($_POST['submit'])) {
+            $array_group = explode("-pqt-", $dataQuiz['quiz_group']);
+            $user_score = 0;
+            $true = 0;
+            $number_question = 0;
+            foreach ($array_group as $group) {
+                if ($group != null || $group != "") {
+                    $number_question++;
+                    if (isset($_POST["true_$group"])) {
+                        $stringSQL = "select * from quiz_groups where group_id=" . $group . "";
+                        $datag = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
+                        if ($datag['true_result'] == $_POST["true_$group"]) {
+                            $true++;
+                        }
+                    }
+                }
+            }
+            $user_score = $true / $number_question * 100;
+            $user_score_10 = $user_score / 10;
+            $user_mssv =  $_SESSION['user_mssv'];
+            $user_class = $_SESSION['user_class'];
+            $stringSQL = "update quiz_user set score=" . $user_score_10 . "    where LOWER(user_class)='" . strtolower($user_class) . "' AND user_mssv='" . $user_mssv . "' ";
+            $query = mysqli_query($conn, $stringSQL);
+            if (!$query) echo '<script> swal("Error !!!", "Có lỗi khi gửi !!. ' . mysqli_error($conn) . ' ", "error"); </script>';
+            else {
+                $_SESSION['user_score'] = $user_score_10;
+
+                echo '<script>swal("Done !!!", "Gửi bài thành công!", "success");</script>';
+            }
+        }
+
+        ?>
+
+
+
+
+
     </div>
 
+
+    <?php
+
+} else {
+
+    ?>
+    <!-- Login -->
+    <div class="pqt-form">
+        <div class="pqt-title">
+            <h2>Đăng Nhập Tham dự bài thi</h2>
+        </div>
+        <div class="pqt-content">
+            <b style="color:red">Thời gian làm bài : <?php echo $time_exam . " phút"; ?>, Sau khi đăng nhập, hệ thống sẽ bắt đầu tính giờ làm bài</b>
+            <form action="" method="POST">
+                <label for="user_mssv" class="inp">
+                    <input name="user_mssv" id="user_mssv" type="text" placeholder="&nbsp;">
+                    <span class="label">Mã số sinh viên :</span>
+                    <span class="border"></span>
+                </label>
+                <br />
+                <label style='margin-top : 20px;' for="user_class" class="inp">
+                    <input name="user_class" id="user_class" type="text" placeholder="&nbsp;">
+                    <span class="label">Lớp</span>
+                    <span class="border"></span>
+                </label>
+
+                <!-- <label for="username">Tài Khoản :</label>
+            <input required="" type="text" name="username" id="username">
+            <label for="password">Mật Khẩu :</label>
+            <input required="" type="password" id="password" name="password"> -->
+                <button type="submit" class="pqt-btn blue" name="submit">Đăng Nhập</button>
+            </form>
+        </div>
+    </div>
+    <?php
+    if (isset($_POST['submit'])) {
+        $mssv = $_POST['user_mssv'];
+        $class = $_POST['user_class'];
+        // User
+        $stringSQL = "select * from quiz_user where LOWER(user_class) = '" . strtolower($class) . "' and user_mssv = '" . $mssv . "' ";
+        $query = mysqli_query($conn, $stringSQL);
+        $row = mysqli_num_rows($query);
+        $dataU = mysqli_fetch_array($query);
+        if ($row == 0) {
+            echo '<script>swal("Lỗi !!!", "Sai mã số sinh viên hoặc lớp, vui lòng thử lại!", "error"); </script>';
+        } else {
+            $_SESSION['user_name'] = $dataU['user_name'];
+            $_SESSION['user_mssv'] = $dataU['user_mssv'];
+            $_SESSION['user_class'] = $dataU['user_class'];
+            $_SESSION['user_score'] = $dataU['score'];
+            echo "<meta http-equiv='refresh' content='0'>";
+        }
+    }
+}
+?>
+    <?php
+
+} else {
+    echo '<script> swal("Lỗi !!!", "Đường dẫn sai hoặc không tồn tại!!!", "error");  </script>';
+}
+?>
 </div>
 </div>
 
 
 
 
-<?php include '../footer.php' ?>
-
-<script>
-    // Add, Delete Group 
-    var id_group = <?php echo $last_id_group ?>;
-    var id_result = <?php echo $last_id_result ?>;
-    var quiz_id = <?php echo $quiz_id ?>;
-
-    $("#add_group").click(function() {
-
-        $.ajax({
-            type: "POST",
-            url: "<?php echo $baseurl ?>/quiz/mod-add-group.php",
-            data: {
-                quiz_id: quiz_id
-            },
-            dataType: "json",
-            success: function(data) {
-                id_group = data.id_groups;
-                id_result = data.id_results;
-                console.log(data);
-
-                // echo '';
-                $('<div id="fgroup-'+id_group+'"> <div class="group"> <div class="group-title"> <span> <div class="col-xs-4"><label for="ex'+id_group+'">Tiêu đề câu hỏi.</label> <input required name="group_title_'+id_group+'" id="ex'+id_group+'"  class="form-control" type="text"> <span id="update-ex'+id_group+'"> </span> </div> <script> $("#ex'+id_group+'").on("change", function() { var post = '+id_group+';   var comment = $.trim($(this).val());  if (comment == "") {      swal("Error !!!", "Không được để trống !", "error");  return;     }     $.ajax({    type: "POST",    url: "../quiz/mod-update-group.php",     data: {         post: post,         comment: comment     },     success: function(data) {      $("#update-ex'+id_group+'").html("<b>Cập nhật thành công</b>");   setTimeout(() => { $("#update-ex'+id_group+'").html("");   }, 1500);   }   });  }); $("#update-ex'+id_group+'").css("color", "#fff"); <\/script> <span> <button type="button" onclick="delete_group('+id_group+')" class="btn btn-danger delete-group">Xóa câu này</button></span>   </span> </div> <div class="group-content">     <div class="form-group" style="position:relative;">   <table>    <tr>      <th>Nội dung kết quả</th>      <th>Kết quả đúng</th>     </tr>   <tbody id="fquestion-'+id_result+'">          <tr>            <td>      <div class="box-question">  <span> <button style="top:0;" type="button" onclick="delete_result('+id_result+','+id_group+')" class="btn btn-danger delete-group">Xóa kết quả này</button></span>  <textarea style="max-width: 1000px;" required name="result_title_'+id_result+'" class="form-control" rows="5" id="comment-'+id_result+'"></textarea>  <span id="update-comment-'+id_result+'"> </span>  <script>   $("#comment-'+id_result+'").on("change", function() {  var post = '+id_result+'; var comment = $.trim($(this).val());  if (comment == "") {   swal("Error !!!", "Không được để trống !", "error");    return;          }  $.ajax({         type: "POST",     url: "../quiz/mod-update-result.php",      data: {                 post: post,         comment: comment               },                   success: function(data) {   $("#update-comment-'+id_result+'").html("<b>Cập nhật thành công</b>");   setTimeout(() => {           $("#update-comment-'+id_result+'").html("");                  }, 1500);            }                  });            });    $("#update-comment-'+id_result+'").css("color", "red");    <\/script>                </div>     </td>   <td>   <div class="cntr"> <label for="true_'+id_result+'" class="radio">         <input type="radio" name="true_'+id_group+'" id="true_'+id_result+'" value="'+id_result+'" class="hidden" />     <span class="label"></span>        </label>     </div>  <span id="update-true_result-'+id_result+'"> </span>        <script>          $("#true_'+id_result+'").on("change", function() {  var id_result = '+id_result+';       var id_group = '+id_group+';                $.ajax({         type: "POST",  url: "../quiz/mod-update-true_result.php",     data: {        id_result: id_result,                    id_group: id_group            },        success: function(data) {         $("#update-true_result-'+id_result+'").html("<b>Cập nhật thành công</b>");     setTimeout(() => {     $("#update-true_result-'+id_result+'").html("");     }, 1500);         }       });    });     $("#update-true_result-'+id_result+'").css("color", "red");     <\/script>     </td>     </tr>  </tbody>   <tbody id="show_question-'+id_group+'">      </tbody>    </table>  </div>  <input type="hidden" id="result_number-'+id_group+'" name="result_number[]" value="1">  <button type="button" class="btn btn-primary pqt-btn full" onclick="add_result('+id_group+');">Thêm kết quả mới</button>  </div></div></div>').insertBefore("#show_group");
-
-                $('<li id="s-fgroup-' + id_group + '-li"><a id="s-fgroup-' + id_group + '" href="#fgroup-' + id_group + '">Câu hỏi</a></li>').insertBefore("#show-list");
-            }
-        });
-
-
-
-    });
-
-
-    function delete_group(id) {
-        var quiz_id = <?php echo $quiz_id; ?>;
-        $.ajax({
-            type: "POST",
-            url: "<?php echo $baseurl ?>/quiz/mod-delete-group.php",
-            data: {
-                id: id,
-                quiz_id: quiz_id,
-            },
-            success: function(data) {
-                $("#fgroup-" + id + "").remove();
-                $("#s-fgroup-" + id + "").remove();
-                $("#s-fgroup-" + id + "-li").remove();
-                swal("Chúc mừng !!!", "Bạn đã xóa thành công!", "success");
-            }
-        });
-
-
-    }
-
-
-    // Add, Delete Question 
-
-    // Add, Delete Question 
-
-    var result_number = 0;
-
-    var id_result;
-
-    function add_result(id) {
-        $.ajax({
-            type: "POST",
-            url: "<?php echo $baseurl ?>/quiz/mod-add-result.php",
-            data: {
-                id: id
-            },
-            success: function(data) {
-                id_result = parseInt(data);
-                result_number = $("#result_number-" + id + "").val();
-                result_number++;
-                $("#result_number-" + id + "").val(result_number);
-                $('<tbody id="fquestion-' + id_result + '"> <tr><td> <div class="box-question"> <span> <button onclick="delete_result(' + id_result + ',' + id + ')" class="btn btn-danger delete-group" style="top : 0;" type="button">Xóa kết quả này</button></span> <textarea style="max-width: 1000px;" required name="result_title[]" class="form-control" rows="5" id="comment-' + id_result + '"></textarea>  <span id="update-comment-' + id_result + '"> </span><script>    $("#comment-' + id_result + '").on("change", function() {     var post = ' + id_result + ';        var comment = $.trim($(this).val());       if (comment == "") {         swal("Error !!!", "Không được để trống !", "error");          return;          }      $.ajax({       type: "POST",       url: "../quiz/mod-update-result.php",         data: {        post: post,      comment: comment      },      success: function(data) {       $("#update-comment-' + id_result + '").html("<b>Cập nhật thành công</b>");      setTimeout(() => {         $("#update-comment-' + id_result + '").html("");       }, 1500);     }  });    });    $("#update-comment-' + id_result + '").css("color","red");  <\/script> </div>   </td> <td> <div class="cntr"> <label for="true_' + id_result + '" class="radio"><input type="radio" name="true_' + id + '" id="true_' + id_result + '" value="' + id_result + '" class="hidden" /> <span class="label"></span>   </label> </div>  </td> </tr> </tbody>').insertBefore("#show_question-" + id + "");
-                swal("Chúc mừng !!!", "Thêm đáp án thành công", "success");
-
-            }
-        });
-
-    };
-
-
-    function delete_result(id, id_group) {
-        $.ajax({
-            type: "POST",
-            url: "<?php echo $baseurl ?>/quiz/mod-delete-result.php",
-            data: {
-                id: id,
-                id_group: id_group
-            },
-            success: function(data) {
-                result_number = $("#result_number-" + id_group + "").val();
-                result_number--;
-                $("#result_number-" + id_group + "").val(result_number);
-                $("#fquestion-" + id + "").remove();
-                swal("Chúc mừng !!!", "Bạn đã xóa thành công!", "success");
-
-            }
-        });
-    }
-</script>
-
-
-<?php
-
-?> 
+<?php include '../footer.php' ?> 

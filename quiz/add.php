@@ -21,7 +21,7 @@ pqt_permission();
                     <span class="label">Thời gian (phút)</span>
                     <span class="border"></span>
                 </label>
-                <span>Cho phép xem điểm và kết quả khi thi xong<span>
+                <span>Public (Chế độ mở, thí sinh có thể vào thi)<span>
                         <div>
                             <input type="hidden" name="public" value="0">
                             <input value="1" name="public" checked type="checkbox" id="cbx" style="display:none" />

@@ -31,6 +31,16 @@ if ($data) {
             }
     }
 
+    $stringSQL = "select * from quiz_user where quiz_id=" . $quiz_id . "";
+    $query = mysqli_query($conn,$stringSQL);
+    
+    while($data_userQ = mysqli_fetch_array($query))
+    {
+        $id_User = $data_userQ['user_id'];
+        $stringSQL = "delete from quiz_user where user_id=" . $id_User . "";
+        $query = mysqli_query($conn, $stringSQL);
+    }
+
 $stringSQL = "delete from quiz where quiz_id=" . $quiz_id . "";
 $query = mysqli_query($conn, $stringSQL);
 

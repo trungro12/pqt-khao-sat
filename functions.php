@@ -15,8 +15,10 @@ function pqt_permission(){
     if(!isset($_SESSION['username']))
     {
         header("Location: ".$baseurl."/index.php");
+        exit;
     }
 }
+
 
 function is_admin()
 {

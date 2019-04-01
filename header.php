@@ -1,4 +1,6 @@
 <?php
+// Turn off error reporting
+error_reporting(0);
 if(!isset($_SESSION)) session_start();
 
 header('Content-Type: text/html; charset=utf-8');
@@ -50,6 +52,12 @@ MathJax.Hub.Config({
                 echo "<a class='login btn btn-primary' href='".$baseurl."/admin.php'> ".$admin."</a> 
                 <a class='login btn btn-primary' href='".$baseurl."/logout.php'> Đăng xuất</a> 
                 ";
+            }
+            else if(isset($_SESSION['user_name']))
+            {
+                $user_exam = $_SESSION['user_name'];
+                echo "<span class='login btn btn-primary' > ".$user_exam."</span> <a class='login btn btn-primary' href='".$baseurl."/logout.php'> Đăng xuất</a> ";
+                
             }
             else
             {
