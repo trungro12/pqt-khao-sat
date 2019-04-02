@@ -78,14 +78,14 @@
 
 
         </div>
-        <div style="text-align: center;
+        <div id="survey_nav" style="text-align: center;
     display: block!important;
     margin: auto;" class="pagination">
             <?php 
 
 
             if ($current_page > 1 && $total_page > 1) {
-                echo '<a href="index.php?page=' . ($current_page - 1) . '">Prev</a> | ';
+                echo '<a href="index.php?page=' . ($current_page - 1) . '?only_survey=1">Prev</a> | ';
             }
 
 
@@ -94,13 +94,13 @@
                 if ($i == $current_page) {
                     echo '<span class="button_css">' . $i . '</span>  ';
                 } else {
-                    echo '<a href="index.php?page=' . $i . '">' . $i . '</a> | ';
+                    echo '<a href="index.php?page=' . $i . '">' . $i . '?only_survey=1</a> | ';
                 }
             }
 
 
             if ($current_page < $total_page && $total_page > 1) {
-                echo '<a href="index.php?page=' . ($current_page + 1) . '">Next</a> | ';
+                echo '<a href="index.php?page=' . ($current_page + 1) . '?only_survey=1">Next</a> | ';
             }
             ?>
         </div>
@@ -174,18 +174,44 @@
 
             </div>
         </div>
+        <div id="quiz_nav" style="text-align: center;
+    display: block!important;
+    margin: auto;" class="pagination">
+            <?php 
 
+
+            if ($current_page > 1 && $total_page > 1) {
+                echo '<a href="index.php?page=' . ($current_page - 1) . '?only_quiz=1">Prev</a> | ';
+            }
+
+
+            for ($i = 1; $i <= $total_page; $i++) {
+
+                if ($i == $current_page) {
+                    echo '<span class="button_css">' . $i . '</span>  ';
+                } else {
+                    echo '<a href="index.php?page=' . $i . '?only_quiz=1">' . $i . '</a> | ';
+                }
+            }
+
+
+            if ($current_page < $total_page && $total_page > 1) {
+                echo '<a href="index.php?page=' . ($current_page + 1) . '?only_quiz=1">Next</a> | ';
+            }
+            ?>
+        </div>
+        <!-- end  Navigation -->
 
     </div>
 </div>
 <?php
 if(isset($_GET['only_survey']) && !isset($_GET['only_quiz']))
 {
-    echo '<script> $("#quiz_show").remove(); </script>';
+    echo '<script> $("#quiz_show").remove(); $("#quiz_nav").remove(); </script>';
 }
 else if(!isset($_GET['only_survey']) && isset($_GET['only_quiz']))
 {
-    echo '<script> $("#survey_show").remove(); </script>';
+    echo '<script> $("#survey_show").remove(); $("#survey_nav").remove(); </script>';
 }
 ?>
 

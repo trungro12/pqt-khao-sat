@@ -21,11 +21,11 @@ if (isset($_GET['quiz_id'])) {
     }
 
     if (!is_admin()) {
-            if ($dataQuiz['public'] < 1) {
-                    echo '<script> swal("Rất tiếc !!!", "Bạn không có quyền xem trang này!!!", "error");  </script>';
-                    exit;
-                }
+        if ($dataQuiz['public'] < 1) {
+            echo '<script> swal("Rất tiếc !!!", "Bạn không có quyền xem trang này!!!", "error");  </script>';
+            exit;
         }
+    }
 
     $last_id_result = 0;
     $time_exam = $dataQuiz['time'];
@@ -34,8 +34,20 @@ if (isset($_GET['quiz_id'])) {
     <div class="container">
         <br />
         <?php
-        if (isset($_SESSION['user_name']) || is_admin()) {
-
+        if (isset($_SESSION['user_id']) || is_admin()) {
+            $time_left = 0;
+            $userid = $_SESSION['user_id'];
+            if (!is_admin()) {
+                    $stringSQL = "select * from quiz_user where quiz_id=" . $quiz_id . " and user_id=" . $userid;
+                    $data = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
+                   
+                    if ($data) {
+                            $time_left = isset($data['time_left']) ? $data['time_left'] : $dataQuiz['time'];
+                        } else {
+                            echo '<script> swal("Rất tiếc !!!", "Bạn không có quyền xem trang này!!!", "error");  </script>';
+                            exit;
+                        }
+                }
             // Check User test exam
             if (isset($_SESSION['user_score'])) {
                 if ($_SESSION['user_score'] > 0) {
@@ -71,7 +83,7 @@ if (isset($_GET['quiz_id'])) {
             opacity: .8;
             font-size: 13px;" id="time-show"> </span>
             <script>
-            var phut = ' . $time_exam . ';
+            var phut = ' .  $time_left . '+1;
             var giay = 0;
 
             function time_exam(){
@@ -79,10 +91,22 @@ if (isset($_GET['quiz_id'])) {
                 $("#time-show").html("Thời gian còn lại : " + phut + ": "+giay);
                 var settime = setTimeout("time_exam()",1000);
                 giay--;
+                var userid = '.$userid.';
                 if(giay == -1)
                 {
                     phut -= 1;
                     giay = 59;
+                    $.ajax({
+                        type: "POST",
+                        url: "../quiz/mod-update-time.php",
+                        data: {
+                            userid: userid,
+                            apply: phut
+                        },
+                        success: function(data) {
+
+                        }
+                    });
                 }
                 if(phut == -1)
                 {
@@ -248,7 +272,7 @@ if (isset($_GET['quiz_id'])) {
                                 <table>
                                     <tr>
                                         <th>Nội dung kết quả</th>
-                                        <th>Kết quả đúng</th>
+                                        <th>Kết quả đúng là ?</th>
                                     </tr>
                                     <?php
                                     $result_count = 0;
@@ -309,13 +333,13 @@ if (isset($_GET['quiz_id'])) {
                 <div id='show_group'></div>
                 <?php
                 if (!is_admin()) {
-                        ?>
+                    ?>
                 <button class='btn btn-primary pqt-btn full' id="submit" name='submit' type='submit'>Gửi</button>
                 <?php
 
             }
 
-        ?>
+            ?>
 
         </form>
 
@@ -407,6 +431,7 @@ if (isset($_GET['quiz_id'])) {
             echo '<script>swal("Lỗi !!!", "Sai mã số sinh viên hoặc lớp, vui lòng thử lại!", "error"); </script>';
         } else {
             $_SESSION['user_name'] = $dataU['user_name'];
+            $_SESSION['user_id'] = $dataU['user_id'];
             $_SESSION['user_mssv'] = $dataU['user_mssv'];
             $_SESSION['user_class'] = $dataU['user_class'];
             $_SESSION['user_score'] = $dataU['score'];

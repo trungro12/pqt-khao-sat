@@ -15,14 +15,16 @@ $baseurl = pqt_baseurl();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo $baseurl; ?>/bootstrap/css/bootstrap.min.css">
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="<?php echo $baseurl; ?>/bootstrap/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
     <link rel='stylesheet' href='<?php echo $baseurl; ?>/style.css'>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <link href="<?php echo $baseurl; ?>/sweetalert/sweetalert.css" rel="stylesheet" />
+    <script src="<?php echo $baseurl; ?>/sweetalert/sweetalert.min.js"></script>
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script> -->
     <script type="text/javascript">
 MathJax.Hub.Config({
   jax: ["input/TeX","output/CommonHTML"],
@@ -32,7 +34,7 @@ MathJax.Hub.Config({
   }
 });
 </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=default"></script>
+    <script src="<?php echo $baseurl; ?>/mathjax/MathJax.js?config=default"></script>
 
     <title><?php if(is_survey_panel()) echo "PQT - Survey Control Panel"; else echo "PQT" ?></title>
 </head>

@@ -1,8 +1,8 @@
 <?php
 include '../db/connect.php';
-$idQuiz = $_POST['post'];
-$comment =  $_POST['comment'];
+$userid = $_POST['userid'];
+$apply =  $_POST['apply'];
 
-$stringSQL = "update quiz set time = '" . $comment . "' where quiz_id=" . $idQuiz . "";
+$stringSQL = "update quiz_user set time_left = '" . $apply . "' where user_id=" . $userid . "";
  $query = mysqli_query($conn, $stringSQL);
 ?>

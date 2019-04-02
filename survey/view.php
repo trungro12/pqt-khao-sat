@@ -35,13 +35,13 @@
                         <?php
                         if (is_admin()) {
 
-                                ?>
+                            ?>
                         <a href="<?php echo $baseurl; ?>/survey/edit.php?survey_id=<?php echo $survey_id; ?>" class='btn btn-primary'>Sửa</a>
                         <button id="delete_survey" type="button" class='btn btn-danger'>Xóa</button>
                         <?php
 
                     }
-                ?>
+                    ?>
                         <?php
 
                     }
@@ -163,23 +163,29 @@
                             if ($is_vote == 1) {
                                 ?>
                             <span>Ý kiến riêng : <span>
-                                    <textarea name="custom_vote_<?php echo $id_group; ?>" class="form-control" rows="5" id="comment-<?php echo $id_group; ?>"></textarea>
-
-                                    <?php
+                                    <textarea name="custom_vote[]" class="form-control" rows="5" id="commentss-<?php echo $id_group; ?>"></textarea>
+                                    <div class="sub-vote">
+                                        <?php
                                     // Admin view
-                                    if (is_admin()) {
-                                        if (isset($dataGroup['custom_vote'])) {
-                                            echo "<b style='color:red'>Admin View : Chỉ admin mới nhìn thấy ý kiến riêng</b> <br />";
-                                            $array_custom = explode("-pqt-", $dataGroup['custom_vote']);
+                                        if (is_admin()) {
+                                            if (isset($dataGroup['custom_vote'])) {
+                                                echo "<b style='color:red'>Ý kiến của người dùng: </b> <br />";
+                                                $array_custom = explode("-pqt-", $dataGroup['custom_vote']);
 
-                                            foreach ($array_custom as $custom_content) {
-                                                if ($custom_content != "")  echo "<li>" . $custom_content . "</li>";
+                                                foreach ($array_custom as $custom_content) {
+                                                    if ($custom_content != "")  echo "<li>" . $custom_content . "</li>";
+                                                }
                                             }
                                         }
                                     }
-                                }
-                                ?>
-
+                                    ?>
+                                    </div>
+                                    <style>
+                                    .sub-vote li:after{
+                                        content: ""!important;
+                                    }
+                                    </style>
+                                    
                         </div>
                     </div>
                 </div>
@@ -207,30 +213,30 @@
 </div>
 <script>
     var local_survey_id = <?php echo $survey_id ?>;
-   $(document).ready(function(){
-    $("#delete_survey").click(function() {
-        var cf = confirm("Bạn có chắc muốn xóa?");
-        var this_url = window.location.href;
-        if (cf != true) return;
-        else {
-            $.ajax({
-                url: "../survey/delete.php",
-                type: "POST",
-                data: {
-                    id: local_survey_id
-                },
-                success: function(data) {
-                   document.location.href= this_url;
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    swal("Error!", "Lỗi khi xóa, hãy thử lại sau!", "error");
-                }
-            });
-        }
+    $(document).ready(function() {
+        $("#delete_survey").click(function() {
+            var cf = confirm("Bạn có chắc muốn xóa?");
+            var this_url = window.location.href;
+            if (cf != true) return;
+            else {
+                $.ajax({
+                    url: "../survey/delete.php",
+                    type: "POST",
+                    data: {
+                        id: local_survey_id
+                    },
+                    success: function(data) {
+                        document.location.href = this_url;
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        swal("Error!", "Lỗi khi xóa, hãy thử lại sau!", "error");
+                    }
+                });
+            }
 
 
+        });
     });
-   });  
 </script>
 <?php include '../footer.php' ?>
 
@@ -243,8 +249,8 @@ if (isset($_POST['submit'])) {
     $group = $first_group;
     $local_score = 100;
     $question_number = array_values($_POST['question_number']);
-
-    foreach ($question_number as $value) {
+    $custom_vote = array_values($_POST['custom_vote']);
+    foreach ($question_number as $key => $value) {
         // Vote Question, Score
         for ($i = 0; $i < $value; $i++) {
 
@@ -286,14 +292,14 @@ if (isset($_POST['submit'])) {
         }
 
         // Custom vote
-        while (!isset($_POST["custom_vote_$group"])) {
-            if (trim($_POST["custom_vote_$group"]) == "") {
-                $group++;
-                continue;
-            }
-        }
-        $vote_content = $_POST["custom_vote_$group"];
-        $stringSQL = "update survey_groups set custom_vote = CONCAT(custom_vote,'" . $vote_content . "-pqt-') where group_id=" . $group . "";
+        // while (!isset($_POST["custom_vote_$group"])) {
+        //     if (trim($_POST["custom_vote_$group"]) == "") {
+        //         $group++;
+        //         continue;
+        //     }
+        // }
+        $vote_content = $custom_vote[$key];
+        $stringSQL = "update survey_groups set custom_vote = if(custom_vote is null, CONCAT('','" . $vote_content . "-pqt-') , CONCAT(custom_vote,'" . $vote_content . "-pqt-')) where group_id=" . $group . "";
         $query = mysqli_query($conn, $stringSQL);
         if (!$query) {
             echo '<script>swal("Lỗi !!!", "Lỗi khi gửi yêu cầu: ' . mysqli_error($conn) . '", "error"); </script>';

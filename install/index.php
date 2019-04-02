@@ -150,6 +150,7 @@ $baseurl = pqt_baseurl();
                 user_mssv varchar(255) not null,
                 quiz_id int,
                 score float,
+                time_left int,
                 date TIMESTAMP
                 )";
             if (mysqli_query($conn, $sql)) {
