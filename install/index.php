@@ -69,6 +69,7 @@ $baseurl = pqt_baseurl();
         $username = $_POST['username'];
         $password = md5($_POST['password']);
         $conn = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+        mysqli_set_charset($conn, "UTF8");
         if (!$conn) {
             echo '<script>swal("Lỗi kết nối", "Có lỗi khi kết nối đếnn cơ sở dữ liệu", "error"); </script>';
         } else {
@@ -80,7 +81,8 @@ $baseurl = pqt_baseurl();
                 date TIMESTAMP,
                 vote int,
                 score float
-                )";
+                )
+                ENGINE=InnoDB CHARACTER SET=utf8;";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng Survey thành công !!!";
             }
@@ -92,7 +94,8 @@ $baseurl = pqt_baseurl();
                     group_question varchar(100),
                     vote int,
                     custom_vote text
-                    )";
+                    )
+                    ENGINE=InnoDB CHARACTER SET=utf8;";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng groups thành công !!!";
             }
@@ -104,7 +107,8 @@ $baseurl = pqt_baseurl();
                         vote int,
                         score float,
                         date TIMESTAMP
-                        )";
+                        )
+                        ENGINE=InnoDB CHARACTER SET=utf8;";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng questions thành công !!!";
             }
@@ -117,7 +121,8 @@ $baseurl = pqt_baseurl();
                 date TIMESTAMP,
                 time int,
                 public tinyint
-                )";
+                )
+                ENGINE=InnoDB CHARACTER SET=utf8;";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng Quiz thành công !!!";
             }
@@ -128,7 +133,8 @@ $baseurl = pqt_baseurl();
                 date TIMESTAMP,
                 group_result text,
                 true_result tinyint
-                )";
+                )
+                ENGINE=InnoDB CHARACTER SET=utf8;";
 
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng quiz_groups thành công !!!";
@@ -138,7 +144,8 @@ $baseurl = pqt_baseurl();
                     result_id int primary key AUTO_INCREMENT,
                     result_title longtext not null,
                     date TIMESTAMP
-                    )";
+                    )
+                    ENGINE=InnoDB CHARACTER SET=utf8;";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng quiz_result thành công !!!";
             }
@@ -152,7 +159,8 @@ $baseurl = pqt_baseurl();
                 score float,
                 time_left int,
                 date TIMESTAMP
-                )";
+                )
+                ENGINE=InnoDB CHARACTER SET=utf8;";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng quiz_user thành công !!!";
             }
@@ -162,7 +170,8 @@ $baseurl = pqt_baseurl();
                         username varchar(50) unique not null,
                         password varchar(50) not null,
                         date TIMESTAMP
-                        )";
+                        )
+                        ENGINE=InnoDB CHARACTER SET=utf8;";
             if (mysqli_query($conn, $sql)) {
                 echo "Tạo bảng admin thành công !!!";
                 $sql = "INSERT INTO admin(username,password,date) values('$username','$password',now())";

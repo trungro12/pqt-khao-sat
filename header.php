@@ -4,9 +4,9 @@ error_reporting(0);
 if(!isset($_SESSION)) session_start();
 
 header('Content-Type: text/html; charset=utf-8');
-$dirhome = $_SERVER["DOCUMENT_ROOT"]."/pqt-khao-sat";
-include $dirhome."/"."functions.php";
-include $dirhome."/db\/"."connect.php";
+$dirhome = $_SERVER['DOCUMENT_ROOT']."/pqt-khao-sat";
+include $dirhome."/functions.php";
+include $dirhome."/db/connect.php";
 $baseurl = pqt_baseurl();
 ?>
 
@@ -16,7 +16,7 @@ $baseurl = pqt_baseurl();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="<?php echo $baseurl; ?>/bootstrap/css/bootstrap.min.css">
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     <script src="<?php echo $baseurl; ?>/bootstrap/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Quicksand:500,700" rel="stylesheet">
