@@ -36,7 +36,7 @@ MathJax.Hub.Config({
 </script>
     <script src="<?php echo $baseurl; ?>/mathjax/MathJax.js?config=default"></script>
 
-    <title><?php if(is_survey_panel()) echo "PQT - Survey Control Panel"; else echo "PQT" ?></title>
+    <title><?php if(is_survey_panel()) echo "PQT - Survey Control Panel"; else if(is_quiz_panel()) echo "PQT - Quiz Control Panel"; else echo "PQT" ?></title>
 </head>
 <body>
     <header id='header' class='header'>
@@ -45,15 +45,31 @@ MathJax.Hub.Config({
             <h1 id='logo'> <a href="<?php echo $baseurl; ?>">PQT</a> </h1>
         </div>
         <div class='top-bar-note'>
-        <span class='notice'>Hệ thống khảo sát và trắc nghiệm miễn phí</span>
+        <!-- <span class='notice'>Hệ thống khảo sát và trắc nghiệm miễn phí</span> -->
         
         <?php
             if(isset($_SESSION['username']))
             {
                 $admin = $_SESSION['username'];
-                echo "<a class='login btn btn-primary' href='".$baseurl."/admin.php'> ".$admin."</a> 
+                if(only_survey !== null && only_survey === 1)
+                {
+                    echo "<a class='login btn btn-primary' href='".$baseurl."/survey/admin.php'> ".$admin."</a> 
+                    <a class='login btn btn-primary' href='".$baseurl."/logout.php'> Đăng xuất</a> 
+                    ";
+                }
+                else if(only_quiz !== null && only_quiz === 1)
+                {
+                    echo "<a class='login btn btn-primary' href='".$baseurl."/quiz/admin.php'> ".$admin."</a> 
+                    <a class='login btn btn-primary' href='".$baseurl."/logout.php'> Đăng xuất</a> 
+                    ";
+                }
+                else
+                {
+                    echo "<a class='login btn btn-primary' href='".$baseurl."/admin.php'> ".$admin."</a> 
                 <a class='login btn btn-primary' href='".$baseurl."/logout.php'> Đăng xuất</a> 
                 ";
+                }
+                
             }
             else if(isset($_SESSION['user_name']))
             {

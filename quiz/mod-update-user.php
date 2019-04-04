@@ -1,7 +1,7 @@
 <?php
 include '../db/connect.php';
 $isResult = $_POST['post'];
-$comment =  mysql_real_escape_string($_POST['comment']);
+$comment =  $_POST['comment'];
 $columns = $_POST['col'];
 if(isset($_POST['isnum']))
 {

@@ -21,6 +21,16 @@ pqt_permission();
                     <span class="label">Thời gian (phút)</span>
                     <span class="border"></span>
                 </label>
+                <br />
+                <br />
+                <label for="max_question" class="inp">
+                    <input name="max_question" type="number" id="max_question" placeholder="&nbsp;">
+                    <span class="label">Số câu hỏi trong 1 đề (bỏ trống hoặc ghi 0 để không giới hạn)</span>
+                    <span class="border"></span>
+                </label>
+                <b style="color:red">Số câu hỏi trong 1 đề : là chức năng hệ thống chọn lọc ra những câu hỏi ngẫu nhiên gói lại trong 1 đề thi. Ví dụ bạn ghi là 10 mà trong trắc nghiệm này có 30 câu. Hệ thống sẽ lấy ngẫu nhiên 10 câu, như vậy sẽ tạo ra được rất nhiều đề thi mà không tốn nhiều công sức.</b>
+                <br />
+                <br />
                 <span>Public (Chế độ mở, thí sinh có thể vào thi)<span>
                         <div>
                             <input type="hidden" name="public" value="0">
@@ -166,7 +176,9 @@ if (isset($_POST['submit'])) {
     $quiz_title = mysql_real_escape_string($_POST['quiz_title']);
     $quiz_time = $_POST['quiz_time'];
     $public = $_POST['public'];
-    $stringSQL = "insert INTO quiz(quiz_title,quiz_group,date,time,public) values('" . $quiz_title . "','',now()," . $quiz_time . "," . $public . ")";
+    $max_question = (isset($_POST['max_question'])) ? $_POST['max_question'] : 0;
+    $stringSQL = "insert INTO quiz(quiz_title,quiz_group,date,time,max_question,public) values('" . $quiz_title . "','',now()," . $quiz_time . "," . $max_question . "," . $public . ")";
+    
     $query = mysqli_query($conn, $stringSQL);
     if (!$query) {
         echo '<script>
@@ -187,6 +199,7 @@ if (isset($_POST['submit'])) {
 
             // insert groups
             $content_group = $group_title[$k];
+            
             $stringSQL = "insert INTO quiz_groups(group_title,date,group_result,true_result) values('" . $content_group . "',now(),'','')";
             $query = mysqli_query($conn, $stringSQL);
             if (!$query) {

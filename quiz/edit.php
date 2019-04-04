@@ -1,7 +1,11 @@
 <?php include '../header.php';
 pqt_permission();
 ?>
-
+<div class="quiz-list">
+    <ul>
+        <p id="show-list"></p>
+    </ul>
+</div>
 <div class="page-content">
     <div class="container">
         <br />
@@ -80,6 +84,45 @@ pqt_permission();
                     <span class="border"></span>
                     <span id="update-time"> </span>
                 </label>
+                <br />
+                <br />
+                <label for="max_question" class="inp">
+                    <input value="<?php echo $dataQuiz['max_question']; ?>" name="max_question" type="number" id="max_question" placeholder="&nbsp;">
+                    <span class="label">Số câu hỏi trong 1 đề (bỏ trống hoặc ghi 0 để không giới hạn)</span>
+                    <span class="border"></span>
+                </label>
+                <span id="update-max_question"> </span>
+                <b style="color:red">Số câu hỏi trong 1 đề : là chức năng hệ thống chọn lọc ra những câu hỏi ngẫu nhiên gói lại trong 1 đề thi. Ví dụ bạn ghi là 10 mà trong trắc nghiệm này có 30 câu. Hệ thống sẽ lấy ngẫu nhiên 10 câu, như vậy sẽ tạo ra được rất nhiều đề thi mà không tốn nhiều công sức.</b>
+                <br />
+                <br />
+                <script>
+                $("#max_question").on("change", function() {
+                    var post = <?php echo $quiz_id; ?>;
+                    var comment = $(this).val();
+                    if (comment == "") {
+                        swal("Error !!!", "Không được để trống !", "error");
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: "../quiz/mod-update-max_question.php",
+                        data: {
+                            post: post,
+                            comment: comment
+                        },
+                        success: function(data) {
+
+                            $("#update-max_question").html("<b>Cập nhật thành công</b><br />");
+                            setTimeout(() => {
+                                $("#update-max_question").html("");
+                            }, 1500);
+
+                        }
+                    });
+                    $("#update-max_question").css("color", "blue");
+
+                });
+            </script>
                 <span>Public (Chế độ mở, thí sinh có thể vào thi)<span>
                         <div>
                             <input type="hidden" name="public" value="0">
@@ -163,7 +206,9 @@ pqt_permission();
                         ?>
                 <!-- html -->
                 <div id='fgroup-<?php echo $id_group; ?>'>
-
+                <script>
+                        $('<li id="s-fgroup-<?php echo $id_group; ?>-li"><a id="s-fgroup-<?php echo $id_group; ?>" href="#fgroup-<?php echo $id_group; ?>">Câu hỏi</a></li>').insertBefore("#show-list");
+                    </script>
                     <div class="group">
                         <div class="group-title">
                             <span>
@@ -348,12 +393,7 @@ pqt_permission();
 
 </div>
 </div>
-<div class="quiz-list">
-    <ul>
-        <li id="s-fgroup-0-li"><a id="s-fgroup-0" href="#fgroup-0">Câu hỏi</a></li>
-        <p id="show-list"></p>
-    </ul>
-</div>
+
 
 
 <script>

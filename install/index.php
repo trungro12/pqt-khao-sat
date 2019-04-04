@@ -1,5 +1,6 @@
 <?php
 if (!isset($_SESSION)) session_start();
+error_reporting(0);
 header('Content-Type: text/html; charset=utf-8');
 $dirhome = $_SERVER["DOCUMENT_ROOT"] . "/pqt-khao-sat";
 include $dirhome . "/" . "functions.php";
@@ -30,7 +31,7 @@ $baseurl = pqt_baseurl();
                 <h1 id='logo'> <a href="<?php echo $baseurl; ?>">PQT</a> </h1>
             </div>
             <div class='top-bar-note'>
-                <span>Hệ thống khảo sát miễn phí với nhiều tính năng hấp dẫn</span>
+                <!-- <span>Hệ thống khảo sát miễn phí với nhiều tính năng hấp dẫn</span> -->
                 <a class='login btn btn-primary' href="<?php echo $baseurl; ?>/login.php"> Đăng nhập</a>
             </div>
         </div>
@@ -120,6 +121,7 @@ $baseurl = pqt_baseurl();
                 quiz_group varchar(255) not null,
                 date TIMESTAMP,
                 time int,
+                max_question int,
                 public tinyint
                 )
                 ENGINE=InnoDB CHARACTER SET=utf8;";

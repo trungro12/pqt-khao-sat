@@ -1,5 +1,9 @@
 <?php
-// Get Url Home
+//to show all > Null all value
+define('only_quiz',null);
+define('only_survey',1);
+
+
 function pqt_baseurl(){
     if(isset($_SERVER['HTTPS'])){
         $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
@@ -29,6 +33,14 @@ function is_survey_panel()
 {
     $fulllink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."";
     $pos = strpos($fulllink,'survey/admin.php');
+    if($pos === false) return false;
+    return true;
+}
+
+function is_quiz_panel()
+{
+    $fulllink = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']."";
+    $pos = strpos($fulllink,'quiz/admin.php');
     if($pos === false) return false;
     return true;
 }

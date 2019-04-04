@@ -1,14 +1,51 @@
 <?php include 'header.php' ?>
 <div class="introduce">
-    <h3>Phần mềm khảo sát và trắc nghiệm miễn phí</h3>
-    <p class='des'>Một phần mềm giúp thu thập, đánh giá chất lượng, ý kiến của từng người trong một tập thể. Từ những
+<?php
+ if(only_survey !== null && only_survey === 1)
+ {
+    echo ' <h3>Hệ thống khảo sát Online cho Hội Sinh Viên Tỉnh Đồng Nai</h3>
+    <p class="des">Một phần mềm giúp thu thập, đánh giá chất lượng, ý kiến của từng người trong một tập thể. Từ những
         ý kiến đó góp phần làm cho tập thể phát triển hơn.
-    </p>
+    </p>';
+
+ }
+ else if(only_quiz !== null && only_quiz === 1)
+ {
+    echo ' <h3>Hệ thống thi trắc nghiệm Online</h3>
+    <p class="des">Hệ thống giúp tự động tạo ra nhiều đề thi trắc nghiệm khác nhau từ những câu hỏi đã có. Tư đó hệ thống tính toán và cho ra đợt thi trắc nghiệm với điểm số được tính chính xác nhất.
+    </p>';
+ }
+ else
+ {
+echo ' <h3>Phần mềm khảo sát và trắc nghiệm miễn phí</h3>
+<p class="des">Một phần mềm giúp thu thập, đánh giá chất lượng, ý kiến của từng người trong một tập thể. Từ những
+    ý kiến đó góp phần làm cho tập thể phát triển hơn.
+</p>';
+ }
+
+?>
+   
 </div>
 <div class="page-content">
     <div class="container">
-        <span style="text-align: center;display: block;"><a class='button_css' href="<?php echo $baseurl; ?>/index.php?only_quiz=1">Trắc ngiệm</a><a class='button_css' href="<?php echo $baseurl; ?>/index.php?only_survey=1">Khảo sát</a></span>
+    <?php
+    if(only_survey !== null)
+    {
 
+
+    }
+    else if(only_quiz !== null)
+    {
+
+    }
+    else
+    {
+echo '<span style="text-align: center;display: block;"><a class="button_css" href="<?php echo $baseurl; ?>/index.php?only_quiz=1">Trắc ngiệm</a><a class="button_css" href="<?php echo $baseurl; ?>/index.php?only_survey=1">Khảo sát</a></span>';
+    }
+
+
+?>
+    
         <div id="survey_show">
 
             <!-- Navigation -->
@@ -36,7 +73,7 @@
 
 
 
-
+<br />
             <span style="font-size: 26px;
     font-weight: bold;
     text-align: center;
@@ -134,7 +171,7 @@
             ?>
 
             <!-- end  Navigation -->
-
+<br />
 
             <span style="font-size: 26px;
     font-weight: bold;
@@ -205,11 +242,11 @@
     </div>
 </div>
 <?php
-if(isset($_GET['only_survey']) && !isset($_GET['only_quiz']))
+if(isset($_GET['only_survey']) && !isset($_GET['only_quiz']) || (only_survey !== null && only_survey === 1 ))
 {
     echo '<script> $("#quiz_show").remove(); $("#quiz_nav").remove(); </script>';
 }
-else if(!isset($_GET['only_survey']) && isset($_GET['only_quiz']))
+else if(!isset($_GET['only_survey']) && isset($_GET['only_quiz']) || (only_quiz !== null && only_quiz === 1))
 {
     echo '<script> $("#survey_show").remove(); $("#survey_nav").remove(); </script>';
 }

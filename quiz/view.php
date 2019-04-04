@@ -29,6 +29,7 @@ if (isset($_GET['quiz_id'])) {
 
     $last_id_result = 0;
     $time_exam = $dataQuiz['time'];
+    $max_question = isset($dataQuiz['max_question']) ? $dataQuiz['max_question'] : 0;
     ?>
 <div class="page-content">
     <div class="container">
@@ -241,9 +242,11 @@ if (isset($_GET['quiz_id'])) {
 
                 // RAndom
                 shuffle($array_group);
-
+                $display = $max_question;
                 foreach ($array_group as $id_group) {
+                   
                     if ($id_group != "" || $id_group != null) {
+                        if($display <= 0) break; else $display--;
                         $stringSQL = "select * from quiz_groups where group_id=" . $id_group . "";
                         $dataGroup = mysqli_fetch_array(mysqli_query($conn, $stringSQL));
 
@@ -277,6 +280,7 @@ if (isset($_GET['quiz_id'])) {
                                     <?php
                                     $result_count = 0;
                                     $array_result = explode("-pqt-", $dataGroup['group_result']);
+                                    shuffle($array_result);
                                     foreach ($array_result as $id_result) {
 
                                         if ($id_result != "" || $id_result != null) {
@@ -350,8 +354,10 @@ if (isset($_GET['quiz_id'])) {
             $user_score = 0;
             $true = 0;
             $number_question = 0;
+            $display = $max_question;
             foreach ($array_group as $group) {
                 if ($group != null || $group != "") {
+                    if($display <= 0) break; else $display--;
                     $number_question++;
                     if (isset($_POST["true_$group"])) {
                         $stringSQL = "select * from quiz_groups where group_id=" . $group . "";
