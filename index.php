@@ -3,7 +3,7 @@
 <?php
  if(only_survey !== null && only_survey === 1)
  {
-    echo ' <h3>Hệ thống khảo sát Online cho Hội Sinh Viên Tỉnh Đồng Nai</h3>
+    echo ' <h3>Hệ thống khảo sát online DNTU</h3>
     <p class="des">Một phần mềm giúp thu thập, đánh giá chất lượng, ý kiến của từng người trong một tập thể. Từ những
         ý kiến đó góp phần làm cho tập thể phát triển hơn.
     </p>';
